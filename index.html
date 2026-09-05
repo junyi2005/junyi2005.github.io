@@ -513,22 +513,33 @@ footer p{margin:0;max-width:none}
         then <i>measuring</i> that the leakage Jacobian fell to zero was the only way to know which model I had.
       </p>
 
-      <h3>These are mechanisms, not applications</h3>
+      <h3>Sign language is the evaluation, not the design target</h3>
       <p>
-        Sign language is where most of this gets tested, and it would be easy to read the work as an
-        application area. That is not how it is built. <a href="#signdino">SignDino</a> is a modification of
-        DINOv2/v3 — the self-distillation game moved off the spatial axis of an image and onto the time axis
-        of a tracked articulator — and what it learns is pose-pattern structure without labels. The strongest
-        evidence for that is not the translation score but the phonological probe, where all sixteen
-        sub-lexical features improve: it has learned how articulators are configured and how they move, not
-        how to translate. Likewise the core of <a href="#vtamo">VTaMo</a> is a general matching layer between
-        two sequences of different length and ordering, which we have since applied to temporal sub-task
-        segmentation of long-horizon robot-manipulation video.
+        Most of this gets tested on sign language, and it would be easy to read the work as an application
+        area. It is not built that way, and the distinction is visible in the methods themselves.
+      </p>
+      <p>
+        <a href="#signdino">SignDino</a> is a modification of DINOv2/v3. Every term in its objective —
+        self-distillation over prototype assignments, masked-token prediction, feature spreading, Gram
+        anchoring — is inherited unchanged from image self-supervision; what I changed is the axis the
+        local–global game is played on, from the spatial extent of an image to the time extent of one tracked
+        stream. Nothing in the loss knows what a sign is. The only sign-specific decision anywhere in the
+        system is which articulators to track, and that is a choice about data preparation, not about method.
+        Its clearest result is not the translation score but the phonological probe: all sixteen sub-lexical
+        features improve, which says the representation has learned how articulators are configured and how
+        they move — not how to map anything to English.
+      </p>
+      <p>
+        <a href="#vtamo">VTaMo</a> has the same shape. Entropy-regularized optimal transport with a learnable
+        null token is a matching layer between two sequences of different length and ordering; the formulation
+        contains no reference to sign language. Sign language is where the need for it is acute, because the
+        order mismatch is severe and unavoidable — but the mismatch itself is common to any setting where a
+        continuous stream and a discrete sequence do not advance in step.
       </p>
       <p class="claim">
-        Sign language is an unusually demanding testbed for motion-to-structure correspondence — dense, fast,
-        semantically loaded, and badly served by existing benchmarks. But it is the evaluation, not the
-        design target.
+        Sign language is an unusually demanding testbed for motion-to-structure correspondence: dense, fast,
+        semantically loaded, and badly served by existing benchmarks. That is why I use it. It is not what the
+        methods were built to fit.
       </p>
 
       <h3>How I try to work</h3>
