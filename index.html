@@ -124,6 +124,21 @@ h2{font-size:clamp(21px,2.4vw,28px);letter-spacing:-.02em;font-weight:660;margin
 .links-row a:hover{text-decoration:underline}
 .links-row .sep{color:var(--dim)}
 
+/* ---------- long-form statement ---------- */
+.prose{max-width:74ch}
+.prose h3{font-size:16px;font-weight:650;letter-spacing:-.008em;margin:30px 0 10px;color:var(--text)}
+.prose h3:first-of-type{margin-top:24px}
+.prose p{margin:0 0 15px;color:var(--muted);font-size:16px;max-width:none}
+.prose p b{color:var(--text);font-weight:620}
+.prose a{text-decoration:none;font-weight:550}
+.prose a:hover{text-decoration:underline}
+.prose .claim{color:var(--text)}
+
+.tenets{list-style:none;padding:0;margin:18px 0 6px;max-width:74ch}
+.tenets li{position:relative;padding-left:22px;margin-bottom:13px;color:var(--muted);font-size:16px}
+.tenets li::before{content:"—";position:absolute;left:0;color:var(--accent);font-weight:700}
+.tenets li b{color:var(--text);font-weight:620}
+
 /* ---------- contact ---------- */
 .contact p{color:var(--muted)}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.94em}
@@ -140,6 +155,8 @@ footer p{margin:0;max-width:none}
     <div class="links">
       <a href="#research">Research</a>
       <a href="#publications">Publications</a>
+      <a href="#statement">Statement</a>
+      <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </div>
   </div>
@@ -353,10 +370,10 @@ footer p{margin:0;max-width:none}
       </figure>
       <div>
         <h3><a href="https://junyi2005.github.io/safety-critic/">Learning Adaptive Safety Margins for Visual Navigation</a></h3>
-        <p class="authors"><span class="me">Junyi Hu</span>*, Shuaihang Yuan*, Geeta Chandra Raju Bethala, Yi Fang, Anthony Tzes</p>
+        <p class="authors"><span class="me">Junyi Hu</span>, Shuaihang Yuan, Geeta Chandra Raju Bethala, Anthony Tzes, Yi Fang</p>
         <div class="meta">
           <span class="tag venue">IROS 2026</span>
-          <span class="tag role">Co-first author*</span>
+          <span class="tag role">First author</span>
           <span class="tag">Real-robot</span>
         </div>
         <p class="blurb">
@@ -391,7 +408,7 @@ footer p{margin:0;max-width:none}
       </figure>
       <div>
         <h3><a href="https://junyi2005.github.io/signdino/">SignDino: Self-Supervised Sign Language Representation Learning via Temporal-Axis Self-Distillation</a></h3>
-        <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Zhenghua Li, Zhifei Li, Yi Fang</p>
+        <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Zhenhua Li, Zhifei Li, Yi Fang</p>
         <div class="meta">
           <span class="tag preprint">Preprint</span>
           <span class="tag role">First author</span>
@@ -448,6 +465,137 @@ footer p{margin:0;max-width:none}
         </div>
       </div>
     </article>
+  </div>
+</section>
+
+<section id="statement">
+  <div class="wrap">
+    <p class="kicker">Research statement</p>
+    <h2>Motion is continuous; meaning is not</h2>
+
+    <div class="prose">
+      <h3>The gap</h3>
+      <p>
+        Motion reaches a model as a continuous stream of pixels. What we need out of it is discrete and
+        structured — a word, a matching frame, a judgement about what will still be visible a second from
+        now. Between the two sits a correspondence, and the prevailing practice is to leave it implicit:
+        hand a large decoder the raw stream and let the alignment fall out of the training loss.
+      </p>
+      <p>
+        That holds up until the two sides have genuinely different structure. Sign languages do not follow
+        spoken word order, so a decoder asked to learn translation <i>and</i> silently discover a cross-modal
+        permutation usually learns neither cleanly. An egocentric camera makes an agent's own motion and its
+        observations mutually dependent, so a predictor trained on that data will read target visibility off
+        its own control command — futures that look plausible and mean the wrong thing. In both cases the
+        model fits the data and misrepresents the task, and the standard benchmark does not notice.
+      </p>
+
+      <h3>What building these systems has taught me</h3>
+      <p>
+        <b>Explicit beats latent whenever the structure can be stated.</b> In
+        <a href="#vtamo">VTaMo</a> the frame↔token correspondence stops being something the decoder has to
+        infer and becomes an object in the model: entropy-regularized optimal transport produces an explicit
+        coupling, with a learnable null token for frames that should match nothing. The alignment can then be
+        inspected, constrained and ablated separately from the translation.
+      </p>
+      <p>
+        <b>The right factorization is usually given by the domain, not discovered.</b> A signer is not one
+        blob and an agent is not one state. <a href="#signdino">SignDino</a> encodes the left hand, the right
+        hand and the face independently over time and fuses only downstream;
+        <a href="#cstwm">CST-WM</a> splits target evidence from ego-motion from observation. In both cases the
+        axes were available for free in the problem, and using them cost nothing but bought a representation
+        whose parts mean something.
+      </p>
+      <p>
+        <b>The dependency you want is rarely the correlation you get.</b> This is the sharpest lesson.
+        In CST-WM the model can predict target visibility very well by cheating — reading it off the action —
+        and no accuracy metric distinguishes that from understanding. Deleting the edge architecturally and
+        then <i>measuring</i> that the leakage Jacobian fell to zero was the only way to know which model I had.
+      </p>
+
+      <h3>These are mechanisms, not applications</h3>
+      <p>
+        Sign language is where most of this gets tested, and it would be easy to read the work as an
+        application area. That is not how it is built. <a href="#signdino">SignDino</a> is a modification of
+        DINOv2/v3 — the self-distillation game moved off the spatial axis of an image and onto the time axis
+        of a tracked articulator — and what it learns is pose-pattern structure without labels. The strongest
+        evidence for that is not the translation score but the phonological probe, where all sixteen
+        sub-lexical features improve: it has learned how articulators are configured and how they move, not
+        how to translate. Likewise the core of <a href="#vtamo">VTaMo</a> is a general matching layer between
+        two sequences of different length and ordering, which we have since applied to temporal sub-task
+        segmentation of long-horizon robot-manipulation video.
+      </p>
+      <p class="claim">
+        Sign language is an unusually demanding testbed for motion-to-structure correspondence — dense, fast,
+        semantically loaded, and badly served by existing benchmarks. But it is the evaluation, not the
+        design target.
+      </p>
+
+      <h3>How I try to work</h3>
+      <p>
+        A constraint that cannot fail is not a claim. Where I impose structure I try to build the measurement
+        that would expose it if it had not taken hold: the leakage Jacobian and action-swap intervention in
+        CST-WM, the controlled robot-motion-only check that separates selective insensitivity from plain
+        numbness, the paired Orig / Zero-shot / Trained protocol in
+        <a href="#signnet">SignNet-1M</a> that keeps a benchmark's coverage blind spot from being mistaken for
+        the training value of data. Baselines matter for the same reason: the comparison I trust most in
+        CST-WM is against a world model that shares the observation interface, planning horizon, candidate
+        budget and action bounds, and differs only in the transition design.
+      </p>
+
+      <h3>Where I want to go</h3>
+      <p>
+        Correspondence is the part of this that should generalize. Optical flow, stereo and SLAM built
+        correspondence between views of a largely rigid world, and the machinery that came out of that work
+        outlived the tasks it was written for. The cases I keep running into are the ones where the two sides
+        are structurally unlike each other — a deforming human body against a discrete linguistic sequence, an
+        action against the evidence it will later produce — and there is no comparable general machinery yet.
+      </p>
+      <p>
+        Two directions follow. The first is <b>correspondence that is learned but inspectable</b>: mechanisms
+        with the generality of an attention map and the auditability of an explicit coupling, so that what the
+        model matched can be examined rather than inferred from downstream accuracy. The second is whether the
+        structure I currently hand-design can be <b>discovered</b> — the causal factorization in CST-WM and the
+        anatomical streams in SignDino were both mine to choose, which does not scale beyond problems I already
+        understand — and, inseparably, what evidence would establish that a discovered structure is real rather
+        than convenient. I expect the evaluation half of that question to be as hard as the modelling half, and
+        I would rather work on both than assume the first will be handled by someone else.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <p class="kicker">About</p>
+    <h2>Background</h2>
+
+    <div class="prose">
+      <p>
+        I am an undergraduate in mathematics at Fudan University and a research assistant at New York
+        University, working with Prof. Yi Fang. I am applying for PhD study beginning Fall 2027.
+      </p>
+      <p>
+        The topics I have worked on were shaped in large part by the groups I joined. What I take to be my own
+        is the judgement I formed while doing them:
+      </p>
+      <ul class="tenets">
+        <li><b>A mechanism described as belonging to an application is usually undersold.</b> The honest test
+          is to run it somewhere it was not designed for, and I would rather do that than add another point to
+          a leaderboard I already lead.</li>
+        <li><b>A result I cannot imagine falsifying is not yet a result.</b> The diagnostic that could have
+          caught me belongs in the paper, not in an appendix — and more than once it has changed what I was
+          entitled to claim.</li>
+        <li><b>When the structure of a problem can be stated, stating it beats hoping a larger model recovers
+          it from correlation.</b> Scale is not a substitute for knowing what your representation is supposed
+          to mean.</li>
+      </ul>
+      <p>
+        My training is in mathematics, and it shows in the tools I reach for: optimal transport as a
+        differentiable matching layer, factorizations chosen for what they forbid rather than what they permit.
+        It also shows in what I find unsatisfying — a number that improved without an account of why.
+      </p>
+    </div>
   </div>
 </section>
 
