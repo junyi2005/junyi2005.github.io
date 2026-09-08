@@ -92,10 +92,11 @@ h2{font-size:clamp(21px,2.4vw,28px);letter-spacing:-.02em;font-weight:660;margin
 .pubgroup .note{color:var(--dim);font-size:13.5px}
 .pubgroup .bar{flex:1;height:1px;background:var(--line);min-width:20px}
 
-.pub{display:grid;grid-template-columns:280px 1fr;gap:28px;align-items:start;
-  padding:30px 0;border-bottom:1px solid var(--line)}
+.pub{padding:30px 0;border-bottom:1px solid var(--line)}
 .pub:last-of-type{border-bottom:0;padding-bottom:6px}
-@media(max-width:760px){.pub{grid-template-columns:1fr;gap:18px}}
+.pub-top{display:grid;grid-template-columns:clamp(240px,38%,340px) 1fr;gap:26px;align-items:start;margin-bottom:15px}
+@media(max-width:760px){.pub-top{grid-template-columns:1fr;gap:16px}}
+.pub-head .meta{margin-bottom:0}
 .pub .teaser{margin:0;line-height:0;border-radius:10px;overflow:hidden;
   border:1px solid var(--line);background:var(--surface-2)}
 .pub .teaser img{width:100%;height:auto;display:block;background:#fff}
@@ -104,7 +105,7 @@ h2{font-size:clamp(21px,2.4vw,28px);letter-spacing:-.02em;font-weight:660;margin
 .pub h3 a:hover{color:var(--accent)}
 .authors{margin:0 0 10px;font-size:14.5px;color:var(--muted);max-width:none}
 .authors .me{color:var(--text);font-weight:650}
-.pub p.blurb{margin:0 0 14px;font-size:15px;color:var(--muted)}
+.pub p.blurb{margin:0 0 14px;font-size:15.6px;line-height:1.72;color:var(--muted);max-width:none}
 .meta{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
 .tag{display:inline-block;font-size:11.5px;font-weight:620;letter-spacing:.05em;
   text-transform:uppercase;padding:3px 10px;border-radius:999px;
@@ -306,102 +307,109 @@ footer p{margin:0;max-width:none}
 
     <!-- ── Safety margins ──────────────────────────────────── -->
     <article class="pub" id="safety">
-      <figure class="teaser">
-        <img loading="lazy"
-             src="https://raw.githubusercontent.com/junyi2005/safety-critic/main/docs/assets/img/architecture.png"
-             alt="A diffusion policy proposes candidate trajectories from RGB-D; a learned safety critic scores and selects one.">
-      </figure>
-      <div>
-        <h3><a href="https://junyi2005.github.io/safety-critic/">Learning Adaptive Safety Margins for Visual Navigation</a></h3>
-        <p class="authors"><span class="me">Junyi Hu</span>, Shuaihang Yuan, Geeta Chandra Raju Bethala, Anthony Tzes, Yi Fang</p>
-        <div class="meta">
-          <span class="tag venue">IROS 2026</span>
-          <span class="tag role">First author</span>
-          <span class="tag">Agent ↔ environment</span>
+      <div class="pub-top">
+        <figure class="teaser">
+          <img loading="lazy"
+               src="https://raw.githubusercontent.com/junyi2005/safety-critic/main/docs/assets/img/architecture.png"
+               alt="A diffusion policy proposes candidate trajectories from RGB-D; a learned safety critic scores and selects one.">
+        </figure>
+        <div class="pub-head">
+          <h3><a href="https://junyi2005.github.io/safety-critic/">Learning Adaptive Safety Margins for Visual Navigation</a></h3>
+          <p class="authors"><span class="me">Junyi Hu</span>, Shuaihang Yuan, Geeta Chandra Raju Bethala, Anthony Tzes, Yi Fang</p>
+          <div class="meta">
+            <span class="tag venue">IROS 2026</span>
+            <span class="tag role">First author</span>
+            <span class="tag">Agent ↔ environment</span>
+          </div>
         </div>
-        <p class="blurb">
-          How much clearance a path needs is a property of the situation, not a constant a designer can fix in
-          advance: set the margin high and the robot detours in open space, set it low and it cuts corners in
-          clutter. We make the margin something the policy reads off the interaction itself. A diffusion policy
-          proposes <span class="mono">K = 16</span> candidate trajectories from egocentric RGB-D, and a learned
-          critic carrying a <b>trajectory-dependent clearance budget</b> scores them. ESDF geometry is privileged
-          information used only offline to supervise the teacher — the deployed selector runs from RGB-D alone,
-          with no map building. <b>0.783 SR / 0.611 SPL on HM3D</b> against NavDP's 0.710 / 0.529, and 8/10 on
-          the hardest real-world scene with a Unitree G1 trained purely in simulation.
-        </p>
-        <div class="links-row">
-          <a href="https://junyi2005.github.io/safety-critic/">Project page</a><span class="sep">·</span>
-          <a href="https://arxiv.org/abs/2607.18200">arXiv</a><span class="sep">·</span>
-          <a href="https://github.com/junyi2005/safety-critic">Code</a>
-        </div>
+      </div>
+      <p class="blurb">
+        How much clearance a path needs is a property of the situation, not a constant a designer can fix in
+        advance: set the margin high and the robot detours in open space, set it low and it cuts corners in
+        clutter. We make the margin something the policy reads off the interaction itself. A diffusion policy
+        proposes <span class="mono">K = 16</span> candidate trajectories from egocentric RGB-D, and a learned
+        critic carrying a <b>trajectory-dependent clearance budget</b> scores them. ESDF geometry is privileged
+        information used only offline to supervise the teacher — the deployed selector runs from RGB-D alone,
+        with no map building. <b>0.783 SR / 0.611 SPL on HM3D</b> against NavDP's 0.710 / 0.529, and 8/10 on
+        the hardest real-world scene with a Unitree G1 trained purely in simulation.
+      </p>
+      <div class="links-row">
+        <a href="https://junyi2005.github.io/safety-critic/">Project page</a><span class="sep">·</span>
+        <a href="https://arxiv.org/abs/2607.18200">arXiv</a><span class="sep">·</span>
+        <a href="https://github.com/junyi2005/safety-critic">Code</a>
       </div>
     </article>
 
     <!-- ── VTaMo ───────────────────────────────────────────── -->
     <article class="pub" id="vtamo">
-      <figure class="teaser">
-        <img loading="lazy"
-             src="https://raw.githubusercontent.com/junyi2005/vtamo/main/assets/pipeline.png"
-             alt="The VTaMo pipeline: frozen CLIP-ViT encoder, Sinkhorn optimal-transport local alignment, orthogonal global alignment, and a LoRA-adapted Flan-T5 decoder.">
-      </figure>
-      <div>
-        <h3><a href="https://github.com/junyi2005/vtamo">VTaMo: Video–Text Alignment Model for Sign Language Translation</a></h3>
-        <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Aoxiang Yang, Yi Fang</p>
-        <div class="meta">
-          <span class="tag venue">ECCV 2026</span>
-          <span class="tag role">First author</span>
-          <span class="tag">Continuous ↔ discrete</span>
+      <div class="pub-top">
+        <figure class="teaser">
+          <img loading="lazy"
+               src="https://raw.githubusercontent.com/junyi2005/vtamo/main/assets/pipeline.png"
+               alt="The VTaMo pipeline: frozen CLIP-ViT encoder, Sinkhorn optimal-transport local alignment, orthogonal global alignment, and a LoRA-adapted Flan-T5 decoder.">
+        </figure>
+        <div class="pub-head">
+          <h3><a href="https://github.com/junyi2005/vtamo">VTaMo: Video–Text Alignment Model for Sign Language Translation</a></h3>
+          <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Aoxiang Yang, Yi Fang</p>
+          <div class="meta">
+            <span class="tag venue">ECCV 2026</span>
+            <span class="tag role">First author</span>
+            <span class="tag">Continuous ↔ discrete</span>
+          </div>
         </div>
-        <p class="blurb">
-          Mapping a continuous stream onto a discrete sequence leaves the correspondence between them implicit
-          inside attention, and that correspondence breaks the moment the two stop advancing in the same order.
-          VTaMo makes it an <b>explicit, differentiable object</b> at three granularities: entropy-regularized
-          optimal transport with a learnable null token for local frame↔token coupling, a learnable orthogonal
-          transform over a memory queue for global calibration, and position-aligned contrastive learning over
-          the reordered features. A text-only recovery model then restores fluent sentences from the decoded
-          pseudo-gloss. Nothing in the formulation refers to sign language — it is a matching layer between two
-          sequences of different length and ordering; sign language is where the order mismatch is severe enough
-          that leaving the correspondence implicit stops working.
-        </p>
-        <div class="links-row">
-          <a href="https://arxiv.org/abs/2607.09126">arXiv</a><span class="sep">·</span>
-          <a href="https://github.com/junyi2005/vtamo">Code</a><span class="sep">·</span>
-          <a href="https://github.com/junyi2005/vtamo#-todo--release-plan">Release plan</a>
-        </div>
+      </div>
+      <p class="blurb">
+        Mapping a continuous stream onto a discrete sequence leaves the correspondence between them implicit
+        inside attention, and that correspondence breaks the moment the two stop advancing in the same order.
+        VTaMo makes it an <b>explicit, differentiable object</b> at three granularities: entropy-regularized
+        optimal transport with a learnable null token for local frame↔token coupling, a learnable orthogonal
+        transform over a memory queue for global calibration, and position-aligned contrastive learning over
+        the reordered features. A text-only recovery model then restores fluent sentences from the decoded
+        pseudo-gloss. Nothing in the formulation refers to sign language — it is a matching layer between two
+        sequences of different length and ordering; sign language is where the order mismatch is severe enough
+        that leaving the correspondence implicit stops working. I have since
+          run the same layer on long-horizon robot-manipulation video to segment sub-tasks.
+      </p>
+      <div class="links-row">
+        <a href="https://arxiv.org/abs/2607.09126">arXiv</a><span class="sep">·</span>
+        <a href="https://github.com/junyi2005/vtamo">Code</a><span class="sep">·</span>
+        <a href="https://github.com/junyi2005/vtamo#-todo--release-plan">Release plan</a>
       </div>
     </article>
 
     <!-- ── SignNet-1M ──────────────────────────────────────── -->
     <article class="pub" id="signnet">
-      <figure class="teaser">
-        <img loading="lazy"
-             src="https://signnet.chatsign.ai/assets/overview.png"
-             alt="Overview of the SignNet-1M augmentation pipeline: novel-view rendering, scene editing and identity reenactment.">
-      </figure>
-      <div>
-        <h3><a href="https://signnet.chatsign.ai/">SignNet-1M: Large-Scale Multilingual Sign Language Video Dataset with Downstream Benchmarks</a></h3>
-        <p class="authors">Zhewen He, <span class="me">Junyi Hu</span>, Haomian Huang, Zhenhua Li, Yu-Shen Liu, Yi Fang</p>
-        <div class="meta">
-          <span class="tag venue">ECCV 2026</span>
-          <span class="tag role">Co-author</span>
-          <span class="tag">~1M clips · 2,058 h</span>
+      <div class="pub-top">
+        <figure class="teaser">
+          <img loading="lazy"
+               src="https://signnet.chatsign.ai/assets/overview.png"
+               alt="Overview of the SignNet-1M augmentation pipeline: novel-view rendering, scene editing and identity reenactment.">
+        </figure>
+        <div class="pub-head">
+          <h3><a href="https://signnet.chatsign.ai/">SignNet-1M: Large-Scale Multilingual Sign Language Video Dataset with Downstream Benchmarks</a></h3>
+          <p class="authors">Zhewen He, <span class="me">Junyi Hu</span>, Haomian Huang, Zhenhua Li, Yu-Shen Liu, Yi Fang</p>
+          <div class="meta">
+            <span class="tag venue">ECCV 2026</span>
+            <span class="tag role">Co-author</span>
+            <span class="tag">~1M clips · 2,058 h</span>
+          </div>
         </div>
-        <p class="blurb">
-          A benchmark reports a score but not which factor of variation caused the failure. Existing corpora are
-          shot near-frontal, in studios, with a handful of performers, so models break under viewpoint,
-          background and identity shift with no way to say which one did it. SignNet-1M <b>generates</b> the
-          variation instead of collecting it: ~1M clips across ASL, DGS and CSL from seven source corpora,
-          varied along three structure-preserving axes — 3DGS novel-view rendering, diffusion-based scene
-          editing, and cross-reenactment identity substitution — each tagged with its factor axis and severity.
-          The paired <b>Orig / Zero-shot / Trained</b> protocol then separates a benchmark's coverage blind spot
-          from the training value of the added data; training on SignNet-1M recovers up to <b>+14.71 BLEU-4</b>.
-        </p>
-        <div class="links-row">
-          <a href="https://signnet.chatsign.ai/">Project page</a><span class="sep">·</span>
-          <a href="https://arxiv.org/abs/2606.24361">arXiv</a><span class="sep">·</span>
-          <a href="https://github.com/openhe-hub/SignNet-1M">Code</a><span class="sep">·</span>
-          <a href="https://drive.google.com/drive/folders/1Wc43peMNvbkyQ_VGgqi9vdYjA_0Fc3HX">Dataset</a>
-        </div>
+      </div>
+      <p class="blurb">
+        A benchmark reports a score but not which factor of variation caused the failure. Existing corpora are
+        shot near-frontal, in studios, with a handful of performers, so models break under viewpoint,
+        background and identity shift with no way to say which one did it. SignNet-1M <b>generates</b> the
+        variation instead of collecting it: ~1M clips across ASL, DGS and CSL from seven source corpora,
+        varied along three structure-preserving axes — 3DGS novel-view rendering, diffusion-based scene
+        editing, and cross-reenactment identity substitution — each tagged with its factor axis and severity.
+        The paired <b>Orig / Zero-shot / Trained</b> protocol then separates a benchmark's coverage blind spot
+        from the training value of the added data; training on SignNet-1M recovers up to <b>+14.71 BLEU-4</b>.
+      </p>
+      <div class="links-row">
+        <a href="https://signnet.chatsign.ai/">Project page</a><span class="sep">·</span>
+        <a href="https://arxiv.org/abs/2606.24361">arXiv</a><span class="sep">·</span>
+        <a href="https://github.com/openhe-hub/SignNet-1M">Code</a><span class="sep">·</span>
+        <a href="https://drive.google.com/drive/folders/1Wc43peMNvbkyQ_VGgqi9vdYjA_0Fc3HX">Dataset</a>
       </div>
     </article>
 
@@ -413,102 +421,108 @@ footer p{margin:0;max-width:none}
 
     <!-- ── CST-WM ──────────────────────────────────────────── -->
     <article class="pub" id="cstwm">
-      <figure class="teaser">
-        <img loading="lazy"
-             src="https://junyi2005.github.io/cst-wm/static/teaser.png"
-             alt="CST-WM factorizes the latent state into target-evidence, robot and observation branches.">
-      </figure>
-      <div>
-        <h3><a href="https://junyi2005.github.io/cst-wm/">CST-WM: A Causally Structured World Model for Embodied Visual Tracking</a></h3>
-        <p class="authors"><span class="me">Junyi Hu</span>, Shuaihang Yuan, Yi Fang</p>
-        <div class="meta">
-          <span class="tag preprint">Preprint</span>
-          <span class="tag role">First author</span>
-          <span class="tag">Causal structure</span>
+      <div class="pub-top">
+        <figure class="teaser">
+          <img loading="lazy"
+               src="https://junyi2005.github.io/cst-wm/static/teaser.png"
+               alt="CST-WM factorizes the latent state into target-evidence, robot and observation branches.">
+        </figure>
+        <div class="pub-head">
+          <h3><a href="https://junyi2005.github.io/cst-wm/">CST-WM: A Causally Structured World Model for Embodied Visual Tracking</a></h3>
+          <p class="authors"><span class="me">Junyi Hu</span>, Shuaihang Yuan, Yi Fang</p>
+          <div class="meta">
+            <span class="tag preprint">Preprint</span>
+            <span class="tag role">First author</span>
+            <span class="tag">Causal structure</span>
+          </div>
         </div>
-        <p class="blurb">
-          A camera that moves with the agent makes its own motion and its observations mutually dependent, and a
-          generic action-conditioned predictor exploits the wrong half of that: it writes the current action
-          <i>directly</i> into the state that represents whether the target is still visible. The rollouts stay
-          plausible and the semantics go wrong. CST-WM writes the relation among robot, target and environment
-          into the transition — factorizing the latent into target-evidence, robot and observation branches and
-          deleting that edge architecturally rather than penalizing it. The leakage Jacobian
-          <span class="mono">|∂H/∂a|</span> falls from <b>0.112 to 0.001</b>, and the model that cannot cheat
-          predicts futures worth ranking: <b>+0.12</b> following rate and <b>+0.15</b> re-acquisition under long
-          occlusion over a matched baseline that shares the observation interface, planning horizon, candidate
-          budget and action bounds, and differs only in the transition design.
-        </p>
-        <div class="links-row">
-          <a href="https://junyi2005.github.io/cst-wm/">Project page</a><span class="sep">·</span>
-          <a href="https://junyi2005.github.io/cst-wm/cst-wm.pdf">Paper</a><span class="sep">·</span>
-          <a href="https://junyi2005.github.io/cst-wm/#demo">Video</a>
-        </div>
+      </div>
+      <p class="blurb">
+        A camera that moves with the agent makes its own motion and its observations mutually dependent, and a
+        generic action-conditioned predictor exploits the wrong half of that: it writes the current action
+        <i>directly</i> into the state that represents whether the target is still visible. The rollouts stay
+        plausible and the semantics go wrong. CST-WM writes the relation among robot, target and environment
+        into the transition — factorizing the latent into target-evidence, robot and observation branches and
+        deleting that edge architecturally rather than penalizing it. The leakage Jacobian
+        <span class="mono">|∂H/∂a|</span> falls from <b>0.112 to 0.001</b>, and the model that cannot cheat
+        predicts futures worth ranking: <b>+0.12</b> following rate and <b>+0.15</b> re-acquisition under long
+        occlusion over a matched baseline that shares the observation interface, planning horizon, candidate
+        budget and action bounds, and differs only in the transition design.
+      </p>
+      <div class="links-row">
+        <a href="https://junyi2005.github.io/cst-wm/">Project page</a><span class="sep">·</span>
+        <a href="https://junyi2005.github.io/cst-wm/cst-wm.pdf">Paper</a><span class="sep">·</span>
+        <a href="https://junyi2005.github.io/cst-wm/#demo">Video</a>
       </div>
     </article>
 
     <!-- ── SignDino ────────────────────────────────────────── -->
     <article class="pub" id="signdino">
-      <figure class="teaser">
-        <img loading="lazy"
-             src="https://junyi2005.github.io/signdino/static/pipeline.png"
-             alt="SignDino moves DINO's local–global self-distillation onto the temporal axis of each tracked articulator.">
-      </figure>
-      <div>
-        <h3><a href="https://junyi2005.github.io/signdino/">SignDino: Self-Supervised Sign Language Representation Learning via Temporal-Axis Self-Distillation</a></h3>
-        <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Zhenhua Li, Zhifei Li, Yi Fang</p>
-        <div class="meta">
-          <span class="tag preprint">Preprint</span>
-          <span class="tag role">First author</span>
-          <span class="tag">Self-supervised learning</span>
+      <div class="pub-top">
+        <figure class="teaser">
+          <img loading="lazy"
+             src="https://junyi2005.github.io/signdino/static/insight.png"
+             alt="Left: DINOv3 samples global and local crops inside one image. Right: SignDino samples the same global and local crops along the time axis of one tracked articulator stream.">
+        </figure>
+        <div class="pub-head">
+          <h3><a href="https://junyi2005.github.io/signdino/">SignDino: Self-Supervised Sign Language Representation Learning via Temporal-Axis Self-Distillation</a></h3>
+          <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Zhenhua Li, Zhifei Li, Yi Fang</p>
+          <div class="meta">
+            <span class="tag preprint">Preprint</span>
+            <span class="tag role">First author</span>
+            <span class="tag">Self-supervised learning</span>
+          </div>
         </div>
-        <p class="blurb">
-          Self-supervised vision learns structure by distilling between two views of one image along the
-          <b>spatial</b> axis. Structured motion has an axis of its own, and the meaningful counterpart of a
-          local crop is not another view of the same frame but a <i>shorter temporal view of the same tracked
-          articulator</i>. SignDino moves the student–teacher recipe onto the time axis: a frozen DINOv3 supplies
-          per-frame embeddings once, and the only thing trained is a lightweight temporal Transformer per
-          anatomical stream — left hand, right hand, face — about <b>30M parameters</b> in total. Every term in
-          the objective is inherited unchanged from image self-supervision; what changed is the axis the
-          local–global game is played on. Frozen features alone already beat the previous <i>live-fine-tuned</i>
-          state of the art on How2Sign, full fine-tuning reaches <b>17.9 BLEU-4</b>, and all 16 ASL-Lex
-          phonological features improve — which says the representation learned how articulators are configured
-          and how they move, not how to map anything to English.
-        </p>
-        <div class="links-row">
-          <a href="https://junyi2005.github.io/signdino/">Project page</a><span class="sep">·</span>
-          <a href="https://junyi2005.github.io/signdino/signdino.pdf">Paper</a><span class="sep">·</span>
-          <a href="https://github.com/junyi2005/signdino">Code</a>
-        </div>
+      </div>
+      <p class="blurb">
+        Self-supervised vision learns structure by distilling between two views of one image along the
+        <b>spatial</b> axis. Structured motion has an axis of its own, and the meaningful counterpart of a
+        local crop is not another view of the same frame but a <i>shorter temporal view of the same tracked
+        articulator</i>. SignDino moves the student–teacher recipe onto the time axis: a frozen DINOv3 supplies
+        per-frame embeddings once, and the only thing trained is a lightweight temporal Transformer per
+        anatomical stream — left hand, right hand, face — about <b>30M parameters</b> in total. Every term in
+        the objective is inherited unchanged from image self-supervision; what changed is the axis the
+        local–global game is played on. Frozen features alone already beat the previous <i>live-fine-tuned</i>
+        state of the art on How2Sign, full fine-tuning reaches <b>17.9 BLEU-4</b>, and all 16 ASL-Lex
+        phonological features improve — which says the representation learned how articulators are configured
+        and how they move, not how to map anything to English.
+      </p>
+      <div class="links-row">
+        <a href="https://junyi2005.github.io/signdino/">Project page</a><span class="sep">·</span>
+        <a href="https://junyi2005.github.io/signdino/signdino.pdf">Paper</a><span class="sep">·</span>
+        <a href="https://github.com/junyi2005/signdino">Code</a>
       </div>
     </article>
 
     <!-- ── Prototype-assisted causal translation ───────────── -->
     <article class="pub" id="realtime">
-      <figure class="teaser">
-        <img loading="lazy"
-             src="assets/realtime-pipeline.png"
-             alt="Three-stage streaming pipeline: confidence-aware masked pose encoding, contrastive VQ sign tokenization, and streaming retrieval, voting and translation.">
-      </figure>
-      <div>
-        <h3>Prototype-Assisted Causal Sign Language Translation with Explicit Latency–Quality Trade-offs</h3>
-        <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Zhenhua Li, Yi Fang</p>
-        <div class="meta">
-          <span class="tag preprint">Under review</span>
-          <span class="tag role">First author</span>
-          <span class="tag">Streaming recognition</span>
+      <div class="pub-top">
+        <figure class="teaser">
+          <img loading="lazy"
+               src="assets/realtime-pipeline.png"
+               alt="Three-stage streaming pipeline: confidence-aware masked pose encoding, contrastive VQ sign tokenization, and streaming retrieval, voting and translation.">
+        </figure>
+        <div class="pub-head">
+          <h3>Prototype-Assisted Causal Sign Language Translation with Explicit Latency–Quality Trade-offs</h3>
+          <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Zhenhua Li, Yi Fang</p>
+          <div class="meta">
+            <span class="tag preprint">Under review</span>
+            <span class="tag role">First author</span>
+            <span class="tag">Streaming recognition</span>
+          </div>
         </div>
-        <p class="blurb">
-          Recognizing motion that carries meaning is one problem offline and a different one online. A streaming
-          system sees noisy pose, cannot wait for hindsight, and is usually judged by a sentence-level score
-          that hides <i>when</i> it committed. Three mechanisms carry the system: a <b>confidence-aware,
-          noise-robust pose representation</b> that stays informative where the underlying keypoint estimates
-          are unreliable; a <b>part-specific VQ tokenizer with discriminative training</b>, so that a short
-          temporal window is enough to retrieve the pattern inside it; and a <b>strictly causal streaming
-          pipeline</b> that constrains which future information a prediction may use. Reporting
-          time-to-first-token, prefix quality and revision rate alongside translation quality turns the
-          latency–quality trade-off into something stated and measured rather than incidental.
-        </p>
       </div>
+      <p class="blurb">
+        Recognizing motion that carries meaning is one problem offline and a different one online. A streaming
+        system sees noisy pose, cannot wait for hindsight, and is usually judged by a sentence-level score
+        that hides <i>when</i> it committed. Three mechanisms carry the system: a <b>confidence-aware,
+        noise-robust pose representation</b> that stays informative where the underlying keypoint estimates
+        are unreliable; a <b>part-specific VQ tokenizer with discriminative training</b>, so that a short
+        temporal window is enough to retrieve the pattern inside it; and a <b>strictly causal streaming
+        pipeline</b> that constrains which future information a prediction may use. Reporting
+        time-to-first-token, prefix quality and revision rate alongside translation quality turns the
+        latency–quality trade-off into something stated and measured rather than incidental.
+      </p>
     </article>
 
   </div>
