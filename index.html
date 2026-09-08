@@ -85,11 +85,6 @@ h2{font-size:clamp(21px,2.4vw,28px);letter-spacing:-.02em;font-weight:660;margin
 .stage a:hover{text-decoration:underline}
 .stage.key{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
 
-.next{margin-top:26px;padding:22px 24px;background:var(--surface-2);
-  border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px}
-.next h3{margin:0 0 8px;font-size:16.5px;font-weight:640;letter-spacing:-.01em}
-.next p{margin:0;color:var(--muted);font-size:15.2px;max-width:none}
-
 /* ---------- publications ---------- */
 .pubgroup{margin:40px 0 4px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 .pubgroup:first-of-type{margin-top:30px}
@@ -295,22 +290,6 @@ footer p{margin:0;max-width:none}
           </p>
         </div>
       </article>
-    </div>
-
-    <div class="next">
-      <h3>Sign language is where these methods are tested, not what they are built for</h3>
-      <p>
-        <a href="#signdino">SignDino</a> is DINOv2/v3 with one thing changed: the axis. Self-distillation over
-        prototype assignments, masked-token prediction, feature spreading and Gram anchoring are all inherited
-        unchanged from image self-supervision, and nothing in the objective knows what a sign is — the only
-        sign-specific decision anywhere in the system is which articulators to track.
-        <a href="#vtamo">VTaMo</a>’s optimal-transport layer matches two sequences of different length and
-        ordering and makes no reference to signing; I have since used it to segment sub-tasks in long-horizon
-        robot-manipulation video, which is the test I actually believe — run a mechanism somewhere it was
-        not designed for. Sign language is dense, fast, semantically loaded and badly served by existing
-        benchmarks, which makes it the hardest case I know of for reading interaction off a human body. That is
-        why I test there.
-      </p>
     </div>
   </div>
 </section>
