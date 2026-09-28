@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Junyi Hu</title>
-<meta name="description" content="Junyi Hu — mathematics undergraduate at Fudan University and research assistant at New York University. Interaction in the physical world: embodied navigation and tracking, and human motion understanding. Applying for PhD study, Fall 2027.">
+<meta name="description" content="Junyi Hu — mathematics undergraduate at Fudan University and research assistant at New York University. How visual systems can understand interaction in the physical world: visual navigation and tracking, and human motion. Applying for PhD study, Fall 2027.">
 <meta property="og:title" content="Junyi Hu">
-<meta property="og:description" content="Interaction in the physical world — embodied navigation and tracking, and human motion understanding. Fudan University · New York University.">
+<meta property="og:description" content="How visual systems can understand interaction in the physical world: visual navigation and tracking, and human motion. Fudan University · New York University.">
 <meta property="og:type" content="profile">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤟</text></svg>">
 <style>
@@ -72,27 +72,10 @@ section{padding:56px 0;border-top:1px solid var(--line);margin-top:56px}
   text-transform:uppercase;margin:0 0 8px}
 h2{font-size:clamp(21px,2.4vw,28px);letter-spacing:-.02em;font-weight:660;margin:0 0 14px}
 
-/* ---------- research stages ---------- */
-.stages{margin-top:32px;display:grid;gap:16px}
-.stage{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-  padding:22px 25px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
-@media(max-width:700px){.stage{grid-template-columns:1fr;gap:10px}}
-.stage .n{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  font-size:12px;color:var(--accent);letter-spacing:.06em;padding-top:4px;white-space:nowrap}
-.stage h3{margin:0 0 8px;font-size:17px;font-weight:650;line-height:1.35;letter-spacing:-.012em}
-.stage p{margin:0;color:var(--muted);font-size:15.2px;max-width:none}
-.stage a{text-decoration:none;font-weight:560}
-.stage a:hover{text-decoration:underline}
-.stage.key{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
-
 /* ---------- publications ---------- */
-.pubgroup{margin:40px 0 4px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.pubgroup:first-of-type{margin-top:30px}
-.pubgroup h3{margin:0;font-size:15px;font-weight:650;letter-spacing:.02em}
-.pubgroup .note{color:var(--dim);font-size:13.5px}
-.pubgroup .bar{flex:1;height:1px;background:var(--line);min-width:20px}
 
 .pub{padding:30px 0;border-bottom:1px solid var(--line)}
+.dirlabel + .pub, .dirlabel + * + .pub{padding-top:22px}
 .pub:last-of-type{border-bottom:0;padding-bottom:6px}
 .pub-top{display:grid;grid-template-columns:clamp(240px,38%,340px) 1fr;gap:26px;align-items:start;margin-bottom:15px}
 @media(max-width:760px){.pub-top{grid-template-columns:1fr;gap:16px}}
@@ -159,7 +142,6 @@ footer p{margin:0;max-width:none}
     <span class="brand">Junyi&nbsp;Hu</span>
     <div class="links">
       <a href="#research">Research</a>
-      <a href="#publications">Publications</a>
       <a href="#future">What’s next</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
@@ -173,8 +155,8 @@ footer p{margin:0;max-width:none}
     <div>
     <h1>Junyi Hu</h1>
     <p class="tagline">
-      I study <b>interaction in the physical world</b> — how a robot and its environment act on each
-      other, and how human movement records the way people act on, and respond to, the world.
+      I study how visual systems can understand <b>interaction in the physical world</b>: how people,
+      agents, objects and environments influence one another over time.
     </p>
     <p class="affil">Undergraduate, School of Mathematical Sciences, <b>Fudan University</b></p>
     <p class="affil">Research Assistant, <b>New York University</b></p>
@@ -206,105 +188,15 @@ footer p{margin:0;max-width:none}
     <p class="kicker">Research</p>
     <h2>Interaction, through two connected directions</h2>
     <p>
-      An agent and the world it moves through are not two systems that happen to be adjacent. What the
-      robot does changes what it will see next, and what the world does back is the only evidence it ever
-      gets. The same holds for people: movement is not decoration laid over a task, it is the record of how
-      someone acted on the world and how the world answered.
-    </p>
-    <p>
-      I work on both sides of that. On the agent side I try to make the relations among robot, target and
-      environment explicit and causal, so that the structure lives inside a world model and is reflected in
-      the decisions the model supports rather than being re-inferred from correlation. On the human side I
-      work on getting motion out of video and turning it into something that can be recognized, represented
-      and reasoned over. The two meet at the point where a human demonstration stops being a trajectory to
-      copy and becomes a statement of how the world should change.
+      I approach this question from two connected directions. In visual navigation and tracking, I study how
+      a policy can adapt its behavior to the spatial context instead of following a fixed notion of safety,
+      and how the dynamics of observer, target and environment can be modeled with explicit causal structure
+      rather than as one entangled system. In human motion, I study how continuous movement aligns with
+      language, and what a representation can learn from the temporal structure of movement without labels.
+      In the long term, I want to make interaction an organizing principle for visual understanding.
     </p>
 
-    <div class="dirlabel"><span class="idx">DIRECTION I</span><h3>The agent and its environment</h3><span class="bar"></span></div>
-    <div class="stages">
-      <article class="stage">
-        <span class="n">01 · INTERACT</span>
-        <div>
-          <h3>How much room a policy should leave is a property of the situation</h3>
-          <p>
-            A clearance margin fixed in advance is wrong in both directions: generous enough for a cluttered
-            room and the robot detours across an empty one; tight enough for an open corridor and it clips a
-            doorway. <a href="#safety">Adaptive Safety Margins</a> makes the margin a function of what the
-            camera currently sees. A generative policy proposes candidate trajectories and a learnable safety
-            critic, carrying a trajectory-dependent clearance budget, scores and ranks them; geometry is
-            privileged information used offline to teach the critic, so the deployed system runs from RGB-D
-            with no map. What conditions the policy is the interaction, not a reconstruction of the room.
-          </p>
-        </div>
-      </article>
-
-      <article class="stage key">
-        <span class="n">02 · STRUCTURE</span>
-        <div>
-          <h3>Separating what the agent did from what the world did</h3>
-          <p>
-            Under an egocentric camera the robot's own motion and its observations become mutually dependent,
-            and a generic action-conditioned predictor exploits the wrong half of that dependency: it reads
-            target visibility off its own command. The rollouts stay plausible and the semantics go wrong.
-            <a href="#cstwm">CST-WM</a> writes the relation among robot, target and environment into the
-            transition itself — target-evidence, robot and observation become separate branches, and the
-            illegitimate edge is deleted architecturally rather than penalized in a loss. Then the leakage is
-            measured, not assumed: a constraint that cannot be shown to hold is not a constraint.
-          </p>
-        </div>
-      </article>
-    </div>
-
-    <div class="dirlabel"><span class="idx">DIRECTION II</span><h3>Human motion as a record of interaction</h3><span class="bar"></span></div>
-    <div class="stages">
-      <article class="stage">
-        <span class="n">03 · EXTRACT</span>
-        <div>
-          <h3>Getting motion out of video, and giving it axes that mean something</h3>
-          <p>
-            Nothing downstream survives a bad signal, and robustness in reading a moving body comes from
-            variation — in viewpoint, in background, in who is performing. <a href="#signnet">SignNet-1M</a>
-            generates that variation rather than going out to collect it: monocular reconstruction recovers
-            body and face, and re-rendering varies viewpoint, scene and identity while preserving the structure
-            that carries the meaning, with every clip tagged by factor and severity.
-            <a href="#signdino">SignDino</a> then asks what axes a motion representation should factor along,
-            and takes the ones the body already provides: left hand, right hand and face are encoded
-            independently over time, with DINO's local–global self-distillation moved off the spatial axis of
-            an image and onto the time axis of one tracked articulator.
-          </p>
-        </div>
-      </article>
-
-      <article class="stage key">
-        <span class="n">04 · REASON</span>
-        <div>
-          <h3>Turning continuous movement into discrete structure</h3>
-          <p>
-            Movement arrives continuously and what we need from it does not. <a href="#vtamo">VTaMo</a> makes
-            that correspondence an explicit, differentiable object instead of leaving it implicit inside
-            attention: entropy-regularized optimal transport produces a frame↔token coupling with a learnable
-            null token for whatever matches nothing, and an orthogonal calibration puts the two embedding
-            spaces on a common scale before contrastive learning runs over the reordered features.
-            <a href="#realtime">Prototype-Assisted Causal Translation</a> asks the same question online, where
-            hindsight is not available: a confidence-aware pose representation, a part-specific tokenizer that
-            makes a short window enough to retrieve a pattern, and a strictly causal pipeline that turns the
-            latency–quality trade-off into something stated and measured.
-          </p>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section id="publications">
-  <div class="wrap">
-    <p class="kicker">Publications</p>
-    <h2>Selected work</h2>
-
-    <div class="pubgroup">
-      <h3>Peer-reviewed</h3>
-      <span class="bar"></span>
-    </div>
+    <div class="dirlabel" id="publications"><span class="idx">DIRECTION I</span><h3>Visual navigation and tracking</h3><span class="bar"></span></div>
 
     <!-- ── Safety margins ──────────────────────────────────── -->
     <article class="pub" id="safety">
@@ -325,14 +217,11 @@ footer p{margin:0;max-width:none}
         </div>
       </div>
       <p class="blurb">
-        How much clearance a path needs is a property of the situation, not a constant a designer can fix in
-        advance: set the margin high and the robot detours in open space, set it low and it cuts corners in
-        clutter. We make the margin something the policy reads off the interaction itself. A diffusion policy
-        proposes <span class="mono">K = 16</span> candidate trajectories from egocentric RGB-D, and a learned
-        critic carrying a <b>trajectory-dependent clearance budget</b> scores them. ESDF geometry is privileged
-        information used only offline to supervise the teacher — the deployed selector runs from RGB-D alone,
-        with no map building. <b>0.783 SR / 0.611 SPL on HM3D</b> against NavDP's 0.710 / 0.529, and 8/10 on
-        the hardest real-world scene with a Unitree G1 trained purely in simulation.
+How much clearance a robot should leave depends on where it is. A diffusion policy proposes candidate
+        paths from RGB-D, and a learned critic scores them with a clearance budget that changes along each
+        path. Map geometry supervises the critic only during training; the deployed system runs from RGB-D with
+        no map. On HM3D it reaches <b>0.783 SR</b> against 0.710 for NavDP, and the same policy, trained only
+        in simulation, runs on a Unitree G1.
       </p>
       <div class="links-row">
         <a href="https://junyi2005.github.io/safety-critic/">Project page</a><span class="sep">·</span>
@@ -340,6 +229,40 @@ footer p{margin:0;max-width:none}
         <a href="https://github.com/junyi2005/safety-critic">Code</a>
       </div>
     </article>
+
+    <!-- ── CST-WM ──────────────────────────────────────────── -->
+    <article class="pub" id="cstwm">
+      <div class="pub-top">
+        <figure class="teaser">
+          <img loading="lazy"
+               src="https://junyi2005.github.io/cst-wm/static/teaser.png"
+               alt="CST-WM factorizes the latent state into target-evidence, robot and observation branches.">
+        </figure>
+        <div class="pub-head">
+          <h3><a href="https://junyi2005.github.io/cst-wm/">CST-WM: A Causally Structured World Model for Embodied Visual Tracking</a></h3>
+          <p class="authors"><span class="me">Junyi Hu</span>, Shuaihang Yuan, Jiazhao Liang, Yi Fang</p>
+          <div class="meta">
+            <span class="tag preprint">Under Review</span>
+            <span class="tag role">First Author</span>
+            <span class="tag">Causal Structure</span>
+          </div>
+        </div>
+      </div>
+      <p class="blurb">
+In logged tracking data the robot's actions correlate with where the target is, so a generic world
+        model learns to read target visibility off its own command. CST-WM splits the state into
+        target-evidence, robot and observation branches and removes the direct edge from action to target
+        evidence, so an action can change that evidence only by moving the robot. On a Unitree Go2 it succeeds
+        in <b>20 of 30</b> real-world trials, against 14 for TrackVLA.
+      </p>
+      <div class="links-row">
+        <a href="https://junyi2005.github.io/cst-wm/">Project page</a><span class="sep">·</span>
+        <a href="https://junyi2005.github.io/cst-wm/cst-wm.pdf">PDF</a><span class="sep">·</span>
+        <a href="https://junyi2005.github.io/cst-wm/#demo">Video</a>
+      </div>
+    </article>
+
+    <div class="dirlabel"><span class="idx">DIRECTION II</span><h3>Human motion</h3><span class="bar"></span></div>
 
     <!-- ── VTaMo ───────────────────────────────────────────── -->
     <article class="pub" id="vtamo">
@@ -360,100 +283,18 @@ footer p{margin:0;max-width:none}
         </div>
       </div>
       <p class="blurb">
-        Mapping a continuous stream onto a discrete sequence leaves the correspondence between them implicit
-        inside attention, and that correspondence breaks the moment the two stop advancing in the same order.
-        VTaMo makes it an <b>explicit, differentiable object</b> at three granularities: entropy-regularized
-        optimal transport with a learnable null token for local frame↔token coupling, a learnable orthogonal
-        transform over a memory queue for global calibration, and position-aligned contrastive learning over
-        the reordered features. A text-only recovery model then restores fluent sentences from the decoded
-        pseudo-gloss. Nothing in the formulation refers to sign language — it is a matching layer between two
-        sequences of different length and ordering; sign language is where the order mismatch is severe enough
-        that leaving the correspondence implicit stops working. I have since
-          run the same layer on long-horizon robot-manipulation video to segment sub-tasks.
+        VTaMo achieves <b>unprecedented alignment between video and text</b>. It aligns the two in feature
+        space with optimal transport: an entropy-regularized transport plan with a learnable null token assigns
+        video frames to text tokens inside each sentence, and an Earth Mover's Distance objective over a
+        learnable orthogonal transform calibrates the two embedding spaces. Because each word is assigned a
+        contiguous stretch of frames, the alignment also segments a continuous motion stream into the spans
+        that carry each word, without frame-level labels. Experiments are on four sign-language translation
+        benchmarks.
       </p>
       <div class="links-row">
         <a href="https://arxiv.org/abs/2607.09126">arXiv</a><span class="sep">·</span>
         <a href="https://github.com/junyi2005/vtamo">Code</a><span class="sep">·</span>
         <a href="https://github.com/junyi2005/vtamo#-todo--release-plan">Release plan</a>
-      </div>
-    </article>
-
-    <!-- ── SignNet-1M ──────────────────────────────────────── -->
-    <article class="pub" id="signnet">
-      <div class="pub-top">
-        <figure class="teaser">
-          <img loading="lazy"
-               src="https://signnet.chatsign.ai/assets/overview.png"
-               alt="Overview of the SignNet-1M augmentation pipeline: novel-view rendering, scene editing and identity reenactment.">
-        </figure>
-        <div class="pub-head">
-          <h3><a href="https://signnet.chatsign.ai/">SignNet-1M: Large-Scale Multilingual Sign Language Video Dataset with Downstream Benchmarks</a></h3>
-          <p class="authors">Zhewen He, <span class="me">Junyi Hu</span>, Haomian Huang, Zhenhua Li, Yu-Shen Liu, Yi Fang</p>
-          <div class="meta">
-            <span class="tag venue">ECCV 2026</span>
-            <span class="tag role">Co-Author</span>
-            <span class="tag">~1M Clips · 2,058 Hours</span>
-          </div>
-        </div>
-      </div>
-      <p class="blurb">
-        A benchmark reports a score but not which factor of variation caused the failure. Existing corpora are
-        shot near-frontal, in studios, with a handful of performers, so models break under viewpoint,
-        background and identity shift with no way to say which one did it. SignNet-1M <b>generates</b> the
-        variation instead of collecting it: ~1M clips across ASL, DGS and CSL from seven source corpora,
-        varied along three structure-preserving axes — 3DGS novel-view rendering, diffusion-based scene
-        editing, and cross-reenactment identity substitution — each tagged with its factor axis and severity.
-        The paired <b>Orig / Zero-shot / Trained</b> protocol then separates a benchmark's coverage blind spot
-        from the training value of the added data; training on SignNet-1M recovers up to <b>+14.71 BLEU-4</b>.
-      </p>
-      <div class="links-row">
-        <a href="https://signnet.chatsign.ai/">Project page</a><span class="sep">·</span>
-        <a href="https://arxiv.org/abs/2606.24361">arXiv</a><span class="sep">·</span>
-        <a href="https://github.com/openhe-hub/SignNet-1M">Code</a><span class="sep">·</span>
-        <a href="https://drive.google.com/drive/folders/1Wc43peMNvbkyQ_VGgqi9vdYjA_0Fc3HX">Dataset</a>
-      </div>
-    </article>
-
-    <div class="pubgroup">
-      <h3>Preprints and manuscripts under review</h3>
-      <span class="note">not yet peer-reviewed</span>
-      <span class="bar"></span>
-    </div>
-
-    <!-- ── CST-WM ──────────────────────────────────────────── -->
-    <article class="pub" id="cstwm">
-      <div class="pub-top">
-        <figure class="teaser">
-          <img loading="lazy"
-               src="https://junyi2005.github.io/cst-wm/static/teaser.png"
-               alt="CST-WM factorizes the latent state into target-evidence, robot and observation branches.">
-        </figure>
-        <div class="pub-head">
-          <h3><a href="https://junyi2005.github.io/cst-wm/">CST-WM: A Causally Structured World Model for Embodied Visual Tracking</a></h3>
-          <p class="authors"><span class="me">Junyi Hu</span>, Shuaihang Yuan, Yi Fang</p>
-          <div class="meta">
-            <span class="tag preprint">Preprint</span>
-            <span class="tag role">First Author</span>
-            <span class="tag">Causal Structure</span>
-          </div>
-        </div>
-      </div>
-      <p class="blurb">
-        A camera that moves with the agent makes its own motion and its observations mutually dependent, and a
-        generic action-conditioned predictor exploits the wrong half of that: it writes the current action
-        <i>directly</i> into the state that represents whether the target is still visible. The rollouts stay
-        plausible and the semantics go wrong. CST-WM writes the relation among robot, target and environment
-        into the transition — factorizing the latent into target-evidence, robot and observation branches and
-        deleting that edge architecturally rather than penalizing it. The leakage Jacobian
-        <span class="mono">|∂H/∂a|</span> falls from <b>0.112 to 0.001</b>, and the model that cannot cheat
-        predicts futures worth ranking: <b>+0.12</b> following rate and <b>+0.15</b> re-acquisition under long
-        occlusion over a matched baseline that shares the observation interface, planning horizon, candidate
-        budget and action bounds, and differs only in the transition design.
-      </p>
-      <div class="links-row">
-        <a href="https://junyi2005.github.io/cst-wm/">Project page</a><span class="sep">·</span>
-        <a href="https://junyi2005.github.io/cst-wm/cst-wm.pdf">PDF</a><span class="sep">·</span>
-        <a href="https://junyi2005.github.io/cst-wm/#demo">Video</a>
       </div>
     </article>
 
@@ -476,17 +317,11 @@ footer p{margin:0;max-width:none}
         </div>
       </div>
       <p class="blurb">
-        Self-supervised vision learns structure by distilling between two views of one image along the
-        <b>spatial</b> axis. Structured motion has an axis of its own, and the meaningful counterpart of a
-        local crop is not another view of the same frame but a <i>shorter temporal view of the same tracked
-        articulator</i>. SignDino moves the student–teacher recipe onto the time axis: a frozen DINOv3 supplies
-        per-frame embeddings once, and the only thing trained is a lightweight temporal Transformer per
-        anatomical stream — left hand, right hand, face — about <b>30M parameters</b> in total. Every term in
-        the objective is inherited unchanged from image self-supervision; what changed is the axis the
-        local–global game is played on. Frozen features alone already beat the previous <i>live-fine-tuned</i>
-        state of the art on How2Sign, full fine-tuning reaches <b>17.9 BLEU-4</b>, and all 16 ASL-Lex
-        phonological features improve — which says the representation learned how articulators are configured
-        and how they move, not how to map anything to English.
+        Image self-supervision distills between a global view and local crops of one image. SignDino applies
+        the same objective <b>along time</b>: for a tracked body part, the local view is a shorter window of
+        the same part, so the representation is learned from how the part moves, with no labels. Each part is
+        its own stream, a small temporal Transformer over frozen DINOv3 features. Experiments are on
+        sign-language video, where the hands and face carry the signal.
       </p>
       <div class="links-row">
         <a href="https://junyi2005.github.io/signdino/">Project page</a><span class="sep">·</span>
@@ -495,16 +330,16 @@ footer p{margin:0;max-width:none}
       </div>
     </article>
 
-    <!-- ── Prototype-assisted causal translation ───────────── -->
+    <!-- ── Real-time sign language translation ─────────────── -->
     <article class="pub" id="realtime">
       <div class="pub-top">
         <figure class="teaser">
           <img loading="lazy"
-               src="assets/realtime-pipeline.png"
-               alt="Three-stage streaming pipeline: confidence-aware masked pose encoding, contrastive VQ sign tokenization, and streaming retrieval, voting and translation.">
+               src="assets/realtime-slt-pipeline.png"
+               alt="Three-stage pipeline: confidence-aware masked pose encoding, discriminative VQ sign tokenization, and a strictly causal streaming pipeline of prototype retrieval, past-only voting and translation.">
         </figure>
         <div class="pub-head">
-          <h3>Prototype-Assisted Causal Sign Language Translation with Explicit Latency–Quality Trade-offs</h3>
+          <h3><a href="assets/realtime-slt.pdf">Real-Time Sign Language Translation by Prototype-Assisted Causal Streaming</a></h3>
           <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Zhenhua Li, Yi Fang</p>
           <div class="meta">
             <span class="tag preprint">Under Review</span>
@@ -514,18 +349,51 @@ footer p{margin:0;max-width:none}
         </div>
       </div>
       <p class="blurb">
-        Recognizing motion that carries meaning is one problem offline and a different one online. A streaming
-        system sees noisy pose, cannot wait for hindsight, and is usually judged by a sentence-level score
-        that hides <i>when</i> it committed. Three mechanisms carry the system: a <b>confidence-aware,
-        noise-robust pose representation</b> that stays informative where the underlying keypoint estimates
-        are unreliable; a <b>part-specific VQ tokenizer with discriminative training</b>, so that a short
-        temporal window is enough to retrieve the pattern inside it; and a <b>strictly causal streaming
-        pipeline</b> that constrains which future information a prediction may use. Reporting
-        time-to-first-token, prefix quality and revision rate alongside translation quality turns the
-        latency–quality trade-off into something stated and measured rather than incidental.
+        The <b>first real-time translation pipeline built for the real world</b>, and both fast and accurate:
+        it turns a live stream of human motion into text. Online systems so far run a recognizer over sliding
+        windows; this pipeline is designed for noisy live input. A confidence-aware pose representation
+        discounts joints with low detector confidence, a part-specific tokenizer lets a short window retrieve
+        the motion unit it belongs to, and the whole pipeline is strictly causal: it reads no future frames and
+        commits each piece of text once. Experiments are on five sign-language translation benchmarks.
       </p>
+      <div class="links-row">
+        <a href="assets/realtime-slt.pdf">PDF</a>
+      </div>
     </article>
 
+    <!-- ── SignNet-1M ──────────────────────────────────────── -->
+    <article class="pub" id="signnet">
+      <div class="pub-top">
+        <figure class="teaser">
+          <img loading="lazy"
+               src="https://signnet.chatsign.ai/assets/overview.png"
+               alt="Overview of the SignNet-1M augmentation pipeline: novel-view rendering, scene editing and identity reenactment.">
+        </figure>
+        <div class="pub-head">
+          <h3><a href="https://signnet.chatsign.ai/">SignNet-1M: Large-Scale Multilingual Sign Language Video Dataset with Downstream Benchmarks</a></h3>
+          <p class="authors">Zhewen He, <span class="me">Junyi Hu</span>, Haomian Huang, Zhenhua Li, Yu-Shen Liu, Yi Fang</p>
+          <div class="meta">
+            <span class="tag venue">ECCV 2026</span>
+            <span class="tag role">Co-Author</span>
+            <span class="tag">~1M Clips · 2,058 Hours</span>
+          </div>
+        </div>
+      </div>
+      <p class="blurb">
+        Video corpora of human motion are shot near-frontal, in studios, with few performers. SignNet-1M
+        re-renders existing corpora with new viewpoints (3D Gaussian splatting), new backgrounds and performer
+        identities (diffusion editing), and capture and compression artifacts, while the motion itself is
+        preserved. Each clip is tagged with the factor it changes and by how much, so a failure can be traced
+        to the factor that caused it. The dataset holds about one million clips (2,058 hours) built from seven
+        sign-language corpora in ASL, DGS and CSL.
+      </p>
+      <div class="links-row">
+        <a href="https://signnet.chatsign.ai/">Project page</a><span class="sep">·</span>
+        <a href="https://arxiv.org/abs/2606.24361">arXiv</a><span class="sep">·</span>
+        <a href="https://github.com/openhe-hub/SignNet-1M">Code</a><span class="sep">·</span>
+        <a href="https://drive.google.com/drive/folders/1Wc43peMNvbkyQ_VGgqi9vdYjA_0Fc3HX">Dataset</a>
+      </div>
+    </article>
   </div>
 </section>
 
