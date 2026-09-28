@@ -9,6 +9,9 @@
 <meta property="og:description" content="How visual systems can understand interaction in the physical world: visual navigation and tracking, and human motion. Fudan University · New York University.">
 <meta property="og:type" content="profile">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤟</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0B0D10; --surface:#14171C; --surface-2:#1B1F26; --line:#2A303A;
@@ -29,28 +32,29 @@
 html{scroll-behavior:smooth}
 body{
   margin:0; background:var(--bg); color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;
 }
 .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
 a{color:var(--accent)}
-p{max-width:none}
+p{max-width:none;text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
 
 /* ---------- nav ---------- */
 nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);
   backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;gap:16px}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:16px}
 nav .brand{font-weight:650;font-size:15px;letter-spacing:-.01em}
-nav .links{display:flex;gap:20px;font-size:14px}
-nav .links a{color:var(--muted);text-decoration:none}
-nav .links a:hover{color:var(--text)}
-@media(max-width:640px){nav .links{gap:14px;font-size:13px}}
+nav .links{display:flex;gap:30px;font-size:15.5px;font-weight:580;letter-spacing:-.005em}
+nav .links a{color:var(--text);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+nav .links a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+@media(max-width:640px){nav .links{gap:16px;font-size:14px}}
 
 /* ---------- hero ---------- */
 header{padding:72px 0 8px}
 h1{font-size:clamp(34px,6vw,54px);line-height:1.1;letter-spacing:-.03em;
   font-weight:700;margin:0 0 14px}
-.tagline{font-size:clamp(17px,2.1vw,20.5px);line-height:1.45;color:var(--text);
+.tagline{font-size:clamp(19px,2.7vw,23.8px);line-height:1.45;color:var(--text);
   font-weight:460;margin:20px 0 22px;max-width:none;letter-spacing:-.011em}
 .tagline b{font-weight:640}
 .affil{color:var(--muted);font-size:16px;margin:0 0 4px;max-width:none}
@@ -79,7 +83,7 @@ h2::before{content:"";display:block;width:44px;height:3px;border-radius:2px;marg
 .pub{padding:30px 0;border-bottom:1px solid var(--line)}
 .dirlabel + .pub, .dirlabel + * + .pub{padding-top:22px}
 .pub:last-of-type{border-bottom:0;padding-bottom:6px}
-.pub-top{display:grid;grid-template-columns:clamp(240px,38%,340px) 1fr;gap:26px;align-items:start;margin-bottom:15px}
+.pub-top{display:grid;grid-template-columns:clamp(240px,34%,290px) 1fr;gap:26px;align-items:start;margin-bottom:15px}
 @media(max-width:760px){.pub-top{grid-template-columns:1fr;gap:16px}}
 .pub-head .meta{margin-bottom:0}
 .pub .teaser{display:flex;align-items:center;justify-content:center;aspect-ratio:16/10;margin:0;
@@ -90,7 +94,7 @@ h2::before{content:"";display:block;width:44px;height:3px;border-radius:2px;marg
 .pub h3{margin:0 0 8px;font-size:19px;font-weight:660;letter-spacing:-.015em;line-height:1.35}
 .pub h3 a{color:var(--text);text-decoration:none}
 .pub h3 a:hover{color:var(--accent)}
-.authors{margin:0 0 10px;font-size:14.5px;color:var(--muted);max-width:none}
+.authors{margin:0 0 10px;font-size:14px;color:var(--muted);max-width:none}
 .authors .me{color:var(--text);font-weight:650}
 .pub p.blurb{margin:0 0 14px;font-size:15.6px;line-height:1.72;color:var(--muted);max-width:none}
 .meta{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
@@ -225,7 +229,8 @@ footer p{margin:0;max-width:none}
       what a representation can learn from the temporal structure of movement without labels. The two
       directions meet when a robot learns from a person: a human demonstration can be read as a statement of
       how the world should change, which the robot then carries out with its own body. In the long term, I want
-      to make interaction an organizing principle for visual understanding.
+      to make interaction an organizing principle for visual understanding, and to build models around that
+      idea.
     </p>
 
     <div class="dirlabel" id="publications"><span class="idx">DIRECTION I</span><h3>Visual navigation and tracking</h3><span class="bar"></span></div>
@@ -253,7 +258,7 @@ footer p{margin:0;max-width:none}
         cautious in one place and too tight in another. We let the robot read it from what it sees: a diffusion
         policy proposes paths from RGB-D, and a critic trained with map geometry picks the one whose clearance
         fits the scene, while the deployed system needs no map. On HM3D it reaches <b>0.783</b> success against
-        0.710 for NavDP, and the same policy runs on a Unitree G1.
+        0.710 for NavDP, and it runs on a Unitree G1.
       </p>
       <div class="links-row">
         <a href="https://junyi2005.github.io/safety-critic/">Project page</a><span class="sep">·</span>
@@ -285,8 +290,8 @@ footer p{margin:0;max-width:none}
         footage takes a shortcut: it comes to believe its own steering is what moves the person. CST-WM gives
         the model the causal structure of the scene, with separate branches for target, robot and observation
         and no direct path from the action to the target, so an action can change what the robot sees of the
-        target only by moving the robot. On a Unitree Go2 it follows a person through occlusion, distractors
-        and fast motion in <b>20 of 30</b> trials, against 14 for TrackVLA.
+        target only by moving it. On a Unitree Go2 it follows a person through occlusion, distractors and fast
+        motion in <b>20 of 30</b> trials, against 14 for TrackVLA.
       </p>
       <div class="links-row">
         <a href="https://junyi2005.github.io/cst-wm/">Project page</a><span class="sep">·</span>
@@ -318,9 +323,9 @@ footer p{margin:0;max-width:none}
       <p class="blurb">
         VTaMo achieves <b>unprecedented alignment between video and text</b>. Rather than leaving the
         correspondence between a continuous stream and a sentence to attention, it matches the two explicitly
-        with optimal transport, word by word; because each word is assigned its own stretch of frames, the
-        alignment also cuts the stream into the pieces that carry each word, with no frame-level labels.
-        Experiments are on four sign-language translation benchmarks.
+        with optimal transport, word by word; because each word is assigned a stretch of frames, the alignment
+        also cuts the stream into the pieces that carry each word, with no frame-level labels. Experiments are
+        on four sign-language translation benchmarks.
       </p>
       <div class="links-row">
         <a href="https://arxiv.org/abs/2607.09126">arXiv</a><span class="sep">·</span>
@@ -347,11 +352,11 @@ footer p{margin:0;max-width:none}
         </div>
       </div>
       <p class="blurb">
-        Image self-supervision learns by comparing a whole image with small crops of it. SignDino applies the
-        same idea <b>along time</b>: it follows each hand and the face through a video and compares a short
-        window of one part with its whole sequence, so a representation of motion is learned from how the body
-        moves, with no labels. Experiments are on sign-language video, where the hands and face carry the
-        signal.
+        Image self-supervision learns by comparing a whole image with small crops taken from it. SignDino
+        applies the same idea <b>along time</b>: it follows each hand and the face separately through a video
+        and compares a short window of one part with that part’s whole sequence, so a representation of motion
+        is learned from how the body moves, with no labels at all. Experiments are on sign-language video,
+        where the hands and the face carry the signal.
       </p>
       <div class="links-row">
         <a href="https://junyi2005.github.io/signdino/">Project page</a><span class="sep">·</span>
@@ -380,9 +385,10 @@ footer p{margin:0;max-width:none}
       </div>
       <p class="blurb">
         The <b>first real-time translation pipeline built for the real world</b>, and both fast and accurate.
-        Online systems so far run a recognizer over sliding windows; this one is designed for noisy live input:
-        it trusts each joint only as far as the pose detector does, recognizes from a short window, and commits
-        each word once, reading no future frames. Experiments are on five sign-language translation benchmarks.
+        Online systems so far simply run a recognizer over sliding windows; this one is designed for noisy live
+        input: it trusts each joint only as far as the pose detector does, recognizes from a short window of
+        motion, and commits each word once, as soon as it is sure, without ever reading future frames.
+        Experiments are on five sign-language translation benchmarks.
       </p>
       <div class="links-row">
         <a href="assets/realtime-slt.pdf">PDF</a>
@@ -445,11 +451,11 @@ footer p{margin:0;max-width:none}
       <p class="blurb">
         A demonstration shows two things at once: what happened to the objects, and how one particular arm made
         it happen. PEWAM keeps only the first. It compiles a demonstration into an effect program, which
-        records where each object travels, where it is held and how the scene ends, with the demonstrator
-        removed, and a world-action model works out, closed loop, how its own body can produce that effect. A
-        person can edit the program by hand, the same program runs on four arms without retraining, and on a
-        real Franka arm programs taken from single human videos complete <b>36 of 40</b> trials, against 22 for
-        a goal image.
+        records where each object travels, where it is held and how the scene ends, with the demonstrator’s
+        body removed, and a world-action model works out, closed loop, how its own body can produce that
+        effect. A person can edit the program by hand, the same program runs on four different arms without any
+        retraining, and on a real Franka arm programs taken from single human videos complete <b>36 of 40</b>
+        trials, against 22 for the same model given a goal image.
       </p>
       <div class="links-row">
         <a href="https://junyi2005.github.io/pewam/">Project page</a><span class="sep">·</span>
@@ -482,9 +488,8 @@ footer p{margin:0;max-width:none}
         Heat-kernel textures describe appearance on a surface through how heat spreads over it, but evaluate
         every kernel through a global spectral basis of the whole mesh. HeatAtlas evaluates each kernel where
         it lives, on a local chart unfolded from the mesh, and makes those charts the representation itself,
-        which removes all global preprocessing and carries over to other meshings of the same surface without
-        retraining. On 32 structurally hard objects it reaches <b>32.29 dB</b>, against 26.82 dB for the
-        strongest baseline.
+        which removes all global preprocessing. On a set of 32 structurally hard objects it reaches <b>32.29
+        dB</b>, against 26.82 dB for the strongest baseline.
       </p>
       <div class="links-row">
         <a href="assets/heatatlas.pdf">PDF</a>
@@ -499,24 +504,25 @@ footer p{margin:0;max-width:none}
 
     <div class="prose">
       <p>
-        A human demonstration is usually consumed as a trajectory to imitate. <a href="#pewam">PEWAM</a> reads it
-        instead as a statement of <b>how the world should change</b>, but I chose the terms of that statement:
-        rigid boxes, two contact points, an end state. Effects in the physical world say more than that. Objects
-        bend, open and pour, tasks have an order and a phase, and one change sets up the next. I want effect
-        programs that can express these things, and world-action models that find their own way to carry them
-        out.
+        A human demonstration is usually consumed as a trajectory to imitate. <a href="#pewam">PEWAM</a> reads
+        it instead as a statement of <b>how the world should change</b>, but I chose the terms of that
+        statement: rigid boxes, two contact points, an end state. Effects in the physical world say more than
+        that. Objects bend, open, pour and break, tasks have an order and a phase, and one change sets up the
+        next. I want effect programs that can express these things, and world-action models that find their own
+        way to carry them out, even on bodies they were never trained on.
       </p>
       <p>
         The same holds for the structure my models rely on. The causal factorization in <a
         href="#cstwm">CST-WM</a>, the body-part streams in <a href="#signdino">SignDino</a> and the effect
         program in PEWAM were all mine to design, which does not scale past problems I already understand. Can
-        such structure be <b>discovered</b> rather than designed, and what evidence would show that a discovered
-        structure is real rather than merely convenient?
+        such structure be <b>discovered</b> from data rather than designed by hand, and what evidence would
+        show that a discovered structure is real, rather than merely convenient for the task?
       </p>
       <p>
-        I also want to explore <b>new foundational representations</b>. Heat diffusion is one example: it
-        describes how a quantity spreads from each point to its neighbours over time using only local geometry,
-        which makes it a natural way to write down how local influence builds up into global structure.
+        I also want to explore <b>new foundational representations</b>. Heat diffusion is one example I have
+        started to work with: it describes how a quantity spreads from each point to its neighbours over time
+        using nothing but local geometry, which makes it a natural way to write down how local influence builds
+        up into global structure.
       </p>
     </div>
   </div>
@@ -528,21 +534,22 @@ footer p{margin:0;max-width:none}
 
     <div class="prose">
       <p>
-        I am an undergraduate in mathematics at <b>Fudan University</b>, on a First-Class Undergraduate
-        Scholarship, and a research assistant at <b>New York University</b>, working with Prof. Yi Fang. I am
-        applying for PhD study beginning Fall 2027.
+        I am an undergraduate in the School of Mathematical Sciences at <b>Fudan University</b>, on a
+        First-Class Undergraduate Scholarship (top 5%), and I am now applying for PhD study to begin in Fall
+        2027.
       </p>
       <p>
-        I also work on site at <b>Liqing Intelligence</b>, a world-model startup, on research and development
-        for its embodied-intelligence stack and on market research across the field. Separately, I run an NSFC
-        undergraduate project on automated grading of disc degeneration from MRI with Shanghai Ninth People’s
-        Hospital.
+        Since July 2025 I have been a research assistant at <b>New York University Abu Dhabi</b>, working with
+        Prof. Yi Fang, where the work on this page was done. I lead each project end to end, from the question
+        to the experiments, the writing and the rebuttal, and I build the systems myself: multi-GPU training,
+        simulation environments, and deployment on real robots, a Unitree G1 and Go2, an xArm7 and a Franka
+        FR3. My training in mathematics shows in the tools I reach for: optimal transport to match two
+        sequences, factorizations chosen for what they rule out.
       </p>
       <p>
-        My training is in mathematics, and it shows in the tools I reach for: optimal transport to match two
-        sequences, factorizations chosen for what they rule out. I build the rest myself, from multi-GPU
-        training and simulation environments to deployment on real robots: a Unitree G1 and Go2, an xArm7 and a
-        Franka FR3.
+        Alongside this, I intern on site at Liqing Intelligence, a world-model startup, and run an NSFC
+        undergraduate project on grading disc degeneration from MRI in collaboration with Shanghai Ninth
+        People’s Hospital.
       </p>
     </div>
   </div>
