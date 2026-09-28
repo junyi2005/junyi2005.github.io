@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Junyi Hu</title>
-<meta name="description" content="Junyi Hu — mathematics undergraduate at Fudan University and research assistant at New York University. How visual systems can understand interaction in the physical world: visual navigation and tracking, and human motion. Applying for PhD study, Fall 2027.">
+<meta name="description" content="Junyi Hu — mathematics undergraduate at Fudan University and research assistant at New York University. How visual systems can understand interaction in the physical world: visual navigation and tracking, human motion, and robots that learn from human demonstrations. Applying for PhD study, Fall 2027.">
 <meta property="og:title" content="Junyi Hu">
 <meta property="og:description" content="How visual systems can understand interaction in the physical world: visual navigation and tracking, and human motion. Fudan University · New York University.">
 <meta property="og:type" content="profile">
@@ -80,15 +80,17 @@ h2{font-size:clamp(21px,2.4vw,28px);letter-spacing:-.02em;font-weight:660;margin
 .pub-top{display:grid;grid-template-columns:clamp(240px,38%,340px) 1fr;gap:26px;align-items:start;margin-bottom:15px}
 @media(max-width:760px){.pub-top{grid-template-columns:1fr;gap:16px}}
 .pub-head .meta{margin-bottom:0}
-.pub .teaser{margin:0;line-height:0;border-radius:10px;overflow:hidden;
-  border:1px solid var(--line);background:var(--surface-2)}
-.pub .teaser img{width:100%;height:auto;display:block;background:#fff}
+.pub .teaser{display:flex;align-items:center;justify-content:center;aspect-ratio:16/10;margin:0;
+  border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#fff;padding:6px;
+  transition:border-color .15s,transform .15s}
+.pub .teaser:hover{border-color:var(--accent);transform:translateY(-1px)}
+.pub .teaser img{width:100%;height:100%;object-fit:contain;display:block}
 .pub h3{margin:0 0 8px;font-size:19px;font-weight:660;letter-spacing:-.015em;line-height:1.35}
 .pub h3 a{color:var(--text);text-decoration:none}
 .pub h3 a:hover{color:var(--accent)}
 .authors{margin:0 0 10px;font-size:14.5px;color:var(--muted);max-width:none}
 .authors .me{color:var(--text);font-weight:650}
-.pub p.blurb{margin:0 0 14px;font-size:15.6px;line-height:1.72;color:var(--muted);max-width:none}
+.pub p.blurb{margin:0 0 14px;font-size:15.6px;line-height:1.72;color:var(--muted);max-width:80ch}
 .meta{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
 .tag{display:inline-block;font-size:12.5px;font-weight:620;letter-spacing:.005em;
   padding:3.5px 11px;border-radius:999px;
@@ -119,8 +121,21 @@ h2{font-size:clamp(21px,2.4vw,28px);letter-spacing:-.02em;font-weight:660;margin
 .portrait{width:200px;max-width:52vw;height:auto;display:block;border-radius:12px;
   border:1px solid var(--line);box-shadow:0 1px 3px rgba(0,0,0,.18)}
 
+/* ---------- news ---------- */
+.news{padding:34px 0 8px}
+.news ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:7px;max-width:84ch}
+.news li{display:grid;grid-template-columns:104px 1fr;gap:14px;font-size:15px;color:var(--muted);line-height:1.55}
+.news .when{color:var(--dim);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;padding-top:1px}
+.news a{text-decoration:none;font-weight:560}
+.news a:hover{text-decoration:underline}
+@media(max-width:560px){.news li{grid-template-columns:1fr;gap:0}}
+#news + section{margin-top:28px}
+
+/* ---------- research statement ---------- */
+#research p.statement{font-size:16.6px;line-height:1.72;color:var(--muted);max-width:74ch}
+
 /* ---------- direction labels ---------- */
-.dirlabel{display:flex;align-items:baseline;gap:12px;margin:34px 0 -4px}
+.dirlabel{display:flex;align-items:baseline;gap:12px;margin:46px 0 -4px}
 .dirlabel h3{margin:0;font-size:15px;font-weight:660;letter-spacing:-.008em}
 .dirlabel .bar{flex:1;height:1px;background:var(--line);min-width:20px}
 .dirlabel .idx{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
@@ -171,6 +186,10 @@ footer p{margin:0;max-width:none}
         <svg viewBox="0 0 24 24"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.8 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.8 2.7 1.3 3.4 1 .1-.7.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.8-5.8 7.8-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
         GitHub
       </a>
+      <a class="btn" href="assets/Junyi_Hu_CV.pdf">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 13h8v1.6H8V13zm0 3.4h5.5V18H8v-1.6z"/></svg>
+        CV
+      </a>
       <a class="btn" href="#publications">
         <svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm8 1.5V8h4.5L14 3.5zM8 12h8v1.6H8V12zm0 3.4h8V17H8v-1.6z"/></svg>
         Publications
@@ -183,45 +202,60 @@ footer p{margin:0;max-width:none}
   </div>
 </header>
 
+<section id="news" class="news">
+  <div class="wrap">
+    <p class="kicker">News</p>
+    <ul>
+      <li><span class="when">Sep 2026</span><span>Presenting <a href="#safety">Adaptive Safety Margins</a> at IROS 2026 in Pittsburgh.</span></li>
+      <li><span class="when">Sep 2026</span><span>Four papers under review: <a href="#cstwm">CST-WM</a>, <a href="#pewam">PEWAM</a>, <a href="#realtime">real-time translation</a> and <a href="#heatatlas">HeatAtlas</a>.</span></li>
+      <li><span class="when">Sep 2026</span><span><a href="#signdino">SignDino</a> preprint, code and project page released.</span></li>
+      <li><span class="when">Aug 2026</span><span>Joined Liqing Intelligence, a world-model startup, as an embodied-AI intern.</span></li>
+      <li><span class="when">Summer 2026</span><span><a href="#vtamo">VTaMo</a> and <a href="#signnet">SignNet-1M</a> accepted to ECCV 2026; <a href="#safety">Adaptive Safety Margins</a> accepted to IROS 2026.</span></li>
+    </ul>
+  </div>
+</section>
+
 <section id="research">
   <div class="wrap">
     <p class="kicker">Research</p>
     <h2>Interaction, through two connected directions</h2>
-    <p>
-      I approach this question from two connected directions. In visual navigation and tracking, I study how
-      a policy can adapt its behavior to the spatial context instead of following a fixed notion of safety,
-      and how the dynamics of observer, target and environment can be modeled with explicit causal structure
-      rather than as one entangled system. In human motion, I study how continuous movement aligns with
-      language, and what a representation can learn from the temporal structure of movement without labels.
-      In the long term, I want to make interaction an organizing principle for visual understanding.
+    <p class="statement">
+      I approach this question from two connected directions. In visual navigation and tracking, I study how a
+      policy can adapt its behavior to the spatial context instead of following a fixed notion of safety, and
+      how the dynamics of observer, target and environment can be modeled with explicit causal structure rather
+      than as one entangled system. In human motion, I study how continuous movement aligns with language, and
+      what a representation can learn from the temporal structure of movement without labels. The two
+      directions meet when a robot learns from a person: a human demonstration can be read as a statement of
+      how the world should change, which the robot then carries out with its own body. In the long term, I want
+      to make interaction an organizing principle for visual understanding.
     </p>
 
     <div class="dirlabel" id="publications"><span class="idx">DIRECTION I</span><h3>Visual navigation and tracking</h3><span class="bar"></span></div>
 
-    <!-- ── Safety margins ──────────────────────────────────── -->
+    <!-- ── Adaptive safety margins ───────────────────────────── -->
     <article class="pub" id="safety">
       <div class="pub-top">
-        <figure class="teaser">
+        <a class="teaser" href="https://junyi2005.github.io/safety-critic/">
           <img loading="lazy"
                src="https://raw.githubusercontent.com/junyi2005/safety-critic/main/docs/assets/img/architecture.png"
                alt="A diffusion policy proposes candidate trajectories from RGB-D; a learned safety critic scores and selects one.">
-        </figure>
+        </a>
         <div class="pub-head">
           <h3><a href="https://junyi2005.github.io/safety-critic/">Learning Adaptive Safety Margins for Visual Navigation</a></h3>
           <p class="authors"><span class="me">Junyi Hu</span>, Shuaihang Yuan, Geeta Chandra Raju Bethala, Anthony Tzes, Yi Fang</p>
           <div class="meta">
             <span class="tag venue">IROS 2026</span>
             <span class="tag role">First Author</span>
-            <span class="tag">Agent ↔ Environment Interaction</span>
+            <span class="tag">Agent ↔ Environment</span>
           </div>
         </div>
       </div>
       <p class="blurb">
-How much clearance a robot should leave depends on where it is. A diffusion policy proposes candidate
-        paths from RGB-D, and a learned critic scores them with a clearance budget that changes along each
-        path. Map geometry supervises the critic only during training; the deployed system runs from RGB-D with
-        no map. On HM3D it reaches <b>0.783 SR</b> against 0.710 for NavDP, and the same policy, trained only
-        in simulation, runs on a Unitree G1.
+        How much room a robot should leave depends on where it is, and a margin fixed in advance is too
+        cautious in one place and too tight in another. We let the robot read it from what it sees: a diffusion
+        policy proposes paths from RGB-D, and a critic trained with map geometry picks the one whose clearance
+        fits the scene, while the deployed system needs no map. On HM3D it reaches <b>0.783</b> success against
+        0.710 for NavDP, and the same policy runs on a Unitree G1.
       </p>
       <div class="links-row">
         <a href="https://junyi2005.github.io/safety-critic/">Project page</a><span class="sep">·</span>
@@ -230,14 +264,14 @@ How much clearance a robot should leave depends on where it is. A diffusion poli
       </div>
     </article>
 
-    <!-- ── CST-WM ──────────────────────────────────────────── -->
+    <!-- ── CST-WM ────────────────────────────────────────────── -->
     <article class="pub" id="cstwm">
       <div class="pub-top">
-        <figure class="teaser">
+        <a class="teaser" href="https://junyi2005.github.io/cst-wm/">
           <img loading="lazy"
                src="https://junyi2005.github.io/cst-wm/static/teaser.png"
-               alt="CST-WM factorizes the latent state into target-evidence, robot and observation branches.">
-        </figure>
+               alt="CST-WM separates target evidence, robot and observation, and removes the direct edge from action to target evidence.">
+        </a>
         <div class="pub-head">
           <h3><a href="https://junyi2005.github.io/cst-wm/">CST-WM: A Causally Structured World Model for Embodied Visual Tracking</a></h3>
           <p class="authors"><span class="me">Junyi Hu</span>, Shuaihang Yuan, Jiazhao Liang, Yi Fang</p>
@@ -249,11 +283,12 @@ How much clearance a robot should leave depends on where it is. A diffusion poli
         </div>
       </div>
       <p class="blurb">
-In logged tracking data the robot's actions correlate with where the target is, so a generic world
-        model learns to read target visibility off its own command. CST-WM splits the state into
-        target-evidence, robot and observation branches and removes the direct edge from action to target
-        evidence, so an action can change that evidence only by moving the robot. On a Unitree Go2 it succeeds
-        in <b>20 of 30</b> real-world trials, against 14 for TrackVLA.
+        A robot that follows a person sees the world move whenever it moves, and a world model trained on that
+        footage takes a shortcut: it comes to believe its own steering is what moves the person. CST-WM gives
+        the model the causal structure of the scene, with separate branches for target, robot and observation
+        and no direct path from the action to the target, so an action can change what the robot sees of the
+        target only by moving the robot. On a Unitree Go2 it follows a person through occlusion, distractors
+        and fast motion in <b>20 of 30</b> trials, against 14 for TrackVLA.
       </p>
       <div class="links-row">
         <a href="https://junyi2005.github.io/cst-wm/">Project page</a><span class="sep">·</span>
@@ -264,48 +299,45 @@ In logged tracking data the robot's actions correlate with where the target is, 
 
     <div class="dirlabel"><span class="idx">DIRECTION II</span><h3>Human motion</h3><span class="bar"></span></div>
 
-    <!-- ── VTaMo ───────────────────────────────────────────── -->
+    <!-- ── VTaMo ─────────────────────────────────────────────── -->
     <article class="pub" id="vtamo">
       <div class="pub-top">
-        <figure class="teaser">
+        <a class="teaser" href="https://github.com/junyi2005/vtamo">
           <img loading="lazy"
                src="https://raw.githubusercontent.com/junyi2005/vtamo/main/assets/pipeline.png"
-               alt="The VTaMo pipeline: frozen CLIP-ViT encoder, Sinkhorn optimal-transport local alignment, orthogonal global alignment, and a LoRA-adapted Flan-T5 decoder.">
-        </figure>
+               alt="The VTaMo pipeline: visual encoder, optimal-transport local alignment, orthogonal global alignment, and the language decoder.">
+        </a>
         <div class="pub-head">
           <h3><a href="https://github.com/junyi2005/vtamo">VTaMo: Video–Text Alignment Model for Sign Language Translation</a></h3>
           <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Aoxiang Yang, Yi Fang</p>
           <div class="meta">
             <span class="tag venue">ECCV 2026</span>
             <span class="tag role">First Author</span>
-            <span class="tag">Continuous ↔ Discrete Alignment</span>
+            <span class="tag">Motion ↔ Language</span>
           </div>
         </div>
       </div>
       <p class="blurb">
-        VTaMo achieves <b>unprecedented alignment between video and text</b>. It aligns the two in feature
-        space with optimal transport: an entropy-regularized transport plan with a learnable null token assigns
-        video frames to text tokens inside each sentence, and an Earth Mover's Distance objective over a
-        learnable orthogonal transform calibrates the two embedding spaces. Because each word is assigned a
-        contiguous stretch of frames, the alignment also segments a continuous motion stream into the spans
-        that carry each word, without frame-level labels. Experiments are on four sign-language translation
-        benchmarks.
+        VTaMo achieves <b>unprecedented alignment between video and text</b>. Rather than leaving the
+        correspondence between a continuous stream and a sentence to attention, it matches the two explicitly
+        with optimal transport, word by word; because each word is assigned its own stretch of frames, the
+        alignment also cuts the stream into the pieces that carry each word, with no frame-level labels.
+        Experiments are on four sign-language translation benchmarks.
       </p>
       <div class="links-row">
         <a href="https://arxiv.org/abs/2607.09126">arXiv</a><span class="sep">·</span>
-        <a href="https://github.com/junyi2005/vtamo">Code</a><span class="sep">·</span>
-        <a href="https://github.com/junyi2005/vtamo#-todo--release-plan">Release plan</a>
+        <a href="https://github.com/junyi2005/vtamo">Code</a>
       </div>
     </article>
 
-    <!-- ── SignDino ────────────────────────────────────────── -->
+    <!-- ── SignDino ──────────────────────────────────────────── -->
     <article class="pub" id="signdino">
       <div class="pub-top">
-        <figure class="teaser">
+        <a class="teaser" href="https://junyi2005.github.io/signdino/">
           <img loading="lazy"
-             src="https://junyi2005.github.io/signdino/static/insight.png"
-             alt="Left: DINOv3 samples global and local crops inside one image. Right: SignDino samples the same global and local crops along the time axis of one tracked articulator stream.">
-        </figure>
+               src="https://junyi2005.github.io/signdino/static/insight.png"
+               alt="Left: image self-supervision samples global and local crops inside one image. Right: SignDino samples global and local views along the time axis of one tracked body part.">
+        </a>
         <div class="pub-head">
           <h3><a href="https://junyi2005.github.io/signdino/">SignDino: Self-Supervised Sign Language Representation Learning via Temporal-Axis Self-Distillation</a></h3>
           <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Zhenhua Li, Zhifei Li, Yi Fang</p>
@@ -317,11 +349,11 @@ In logged tracking data the robot's actions correlate with where the target is, 
         </div>
       </div>
       <p class="blurb">
-        Image self-supervision distills between a global view and local crops of one image. SignDino applies
-        the same objective <b>along time</b>: for a tracked body part, the local view is a shorter window of
-        the same part, so the representation is learned from how the part moves, with no labels. Each part is
-        its own stream, a small temporal Transformer over frozen DINOv3 features. Experiments are on
-        sign-language video, where the hands and face carry the signal.
+        Image self-supervision learns by comparing a whole image with small crops of it. SignDino applies the
+        same idea <b>along time</b>: it follows each hand and the face through a video and compares a short
+        window of one part with its whole sequence, so a representation of motion is learned from how the body
+        moves, with no labels. Experiments are on sign-language video, where the hands and face carry the
+        signal.
       </p>
       <div class="links-row">
         <a href="https://junyi2005.github.io/signdino/">Project page</a><span class="sep">·</span>
@@ -330,45 +362,43 @@ In logged tracking data the robot's actions correlate with where the target is, 
       </div>
     </article>
 
-    <!-- ── Real-time sign language translation ─────────────── -->
+    <!-- ── Real-time translation ─────────────────────────────── -->
     <article class="pub" id="realtime">
       <div class="pub-top">
-        <figure class="teaser">
+        <a class="teaser" href="assets/realtime-slt.pdf">
           <img loading="lazy"
                src="assets/realtime-slt-pipeline.png"
-               alt="Three-stage pipeline: confidence-aware masked pose encoding, discriminative VQ sign tokenization, and a strictly causal streaming pipeline of prototype retrieval, past-only voting and translation.">
-        </figure>
+               alt="Three-stage pipeline: confidence-aware masked pose encoding, discriminative VQ tokenization, and a strictly causal streaming pipeline of retrieval, past-only voting and translation.">
+        </a>
         <div class="pub-head">
           <h3><a href="assets/realtime-slt.pdf">Real-Time Sign Language Translation by Prototype-Assisted Causal Streaming</a></h3>
           <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Zhenhua Li, Yi Fang</p>
           <div class="meta">
             <span class="tag preprint">Under Review</span>
             <span class="tag role">First Author</span>
-            <span class="tag">Streaming Recognition</span>
+            <span class="tag">Real-Time Streaming</span>
           </div>
         </div>
       </div>
       <p class="blurb">
-        The <b>first real-time translation pipeline built for the real world</b>, and both fast and accurate:
-        it turns a live stream of human motion into text. Online systems so far run a recognizer over sliding
-        windows; this pipeline is designed for noisy live input. A confidence-aware pose representation
-        discounts joints with low detector confidence, a part-specific tokenizer lets a short window retrieve
-        the motion unit it belongs to, and the whole pipeline is strictly causal: it reads no future frames and
-        commits each piece of text once. Experiments are on five sign-language translation benchmarks.
+        The <b>first real-time translation pipeline built for the real world</b>, and both fast and accurate.
+        Online systems so far run a recognizer over sliding windows; this one is designed for noisy live input:
+        it trusts each joint only as far as the pose detector does, recognizes from a short window, and commits
+        each word once, reading no future frames. Experiments are on five sign-language translation benchmarks.
       </p>
       <div class="links-row">
         <a href="assets/realtime-slt.pdf">PDF</a>
       </div>
     </article>
 
-    <!-- ── SignNet-1M ──────────────────────────────────────── -->
+    <!-- ── SignNet-1M ────────────────────────────────────────── -->
     <article class="pub" id="signnet">
       <div class="pub-top">
-        <figure class="teaser">
+        <a class="teaser" href="https://signnet.chatsign.ai/">
           <img loading="lazy"
                src="https://signnet.chatsign.ai/assets/overview.png"
-               alt="Overview of the SignNet-1M augmentation pipeline: novel-view rendering, scene editing and identity reenactment.">
-        </figure>
+               alt="Overview of the SignNet-1M pipeline: novel-view rendering, scene editing and performer substitution.">
+        </a>
         <div class="pub-head">
           <h3><a href="https://signnet.chatsign.ai/">SignNet-1M: Large-Scale Multilingual Sign Language Video Dataset with Downstream Benchmarks</a></h3>
           <p class="authors">Zhewen He, <span class="me">Junyi Hu</span>, Haomian Huang, Zhenhua Li, Yu-Shen Liu, Yi Fang</p>
@@ -380,18 +410,86 @@ In logged tracking data the robot's actions correlate with where the target is, 
         </div>
       </div>
       <p class="blurb">
-        Video corpora of human motion are shot near-frontal, in studios, with few performers. SignNet-1M
-        re-renders existing corpora with new viewpoints (3D Gaussian splatting), new backgrounds and performer
-        identities (diffusion editing), and capture and compression artifacts, while the motion itself is
-        preserved. Each clip is tagged with the factor it changes and by how much, so a failure can be traced
-        to the factor that caused it. The dataset holds about one million clips (2,058 hours) built from seven
-        sign-language corpora in ASL, DGS and CSL.
+        Recorded motion video comes from a few cameras, rooms and people, so a model trained on it breaks when
+        any of them changes, and a benchmark score does not say which one did it. SignNet-1M re-renders
+        existing video with new viewpoints, backgrounds and performers while keeping the motion, and tags every
+        clip with what was changed and by how much: about one million clips (2,058 hours), built from seven
+        sign-language corpora.
       </p>
       <div class="links-row">
         <a href="https://signnet.chatsign.ai/">Project page</a><span class="sep">·</span>
         <a href="https://arxiv.org/abs/2606.24361">arXiv</a><span class="sep">·</span>
         <a href="https://github.com/openhe-hub/SignNet-1M">Code</a><span class="sep">·</span>
         <a href="https://drive.google.com/drive/folders/1Wc43peMNvbkyQ_VGgqi9vdYjA_0Fc3HX">Dataset</a>
+      </div>
+    </article>
+
+    <div class="dirlabel"><span class="idx">WHERE THEY MEET</span><h3>From a human demonstration to a robot’s execution</h3><span class="bar"></span></div>
+
+    <!-- ── PEWAM ─────────────────────────────────────────────── -->
+    <article class="pub" id="pewam">
+      <div class="pub-top">
+        <a class="teaser" href="https://junyi2005.github.io/pewam/">
+          <img loading="lazy"
+               src="https://junyi2005.github.io/pewam/static/teaser.png"
+               alt="Copying the demonstrator fails on a held-out task, after a push, on another arm and under a new grasp; programming the effect succeeds in all four.">
+        </a>
+        <div class="pub-head">
+          <h3><a href="https://junyi2005.github.io/pewam/">Keep the Effect, Drop the Actor: Programmable Effect-to-Execution World-Action Models</a></h3>
+          <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Yi Fang</p>
+          <div class="meta">
+            <span class="tag preprint">Under Review</span>
+            <span class="tag role">First Author</span>
+            <span class="tag">Human → Robot</span>
+          </div>
+        </div>
+      </div>
+      <p class="blurb">
+        A demonstration shows two things at once: what happened to the objects, and how one particular arm made
+        it happen. PEWAM keeps only the first. It compiles a demonstration into an effect program, which
+        records where each object travels, where it is held and how the scene ends, with the demonstrator
+        removed, and a world-action model works out, closed loop, how its own body can produce that effect. A
+        person can edit the program by hand, the same program runs on four arms without retraining, and on a
+        real Franka arm programs taken from single human videos complete <b>36 of 40</b> trials, against 22 for
+        a goal image.
+      </p>
+      <div class="links-row">
+        <a href="https://junyi2005.github.io/pewam/">Project page</a><span class="sep">·</span>
+        <a href="https://junyi2005.github.io/pewam/pewam.pdf">PDF</a><span class="sep">·</span>
+        <a href="https://junyi2005.github.io/pewam/#video">Video</a>
+      </div>
+    </article>
+
+    <div class="dirlabel"><span class="idx">OTHER WORK</span><h3>Surface representation</h3><span class="bar"></span></div>
+
+    <!-- ── HeatAtlas ─────────────────────────────────────────── -->
+    <article class="pub" id="heatatlas">
+      <div class="pub-top">
+        <a class="teaser" href="assets/heatatlas.pdf">
+          <img loading="lazy"
+               src="assets/heatatlas-overview.png"
+               alt="HeatAtlas overview: local charts unfolded from the mesh, short-time heat kernel weights, chart content, and composition.">
+        </a>
+        <div class="pub-head">
+          <h3><a href="assets/heatatlas.pdf">HeatAtlas: Surface Textures as Learnable Atlases of Local Heat Kernels</a></h3>
+          <p class="authors">Zhewen He, <span class="me">Junyi Hu</span>, Yi Fang</p>
+          <div class="meta">
+            <span class="tag preprint">Under Review</span>
+            <span class="tag role">Co-Author</span>
+            <span class="tag">Surface Representation</span>
+          </div>
+        </div>
+      </div>
+      <p class="blurb">
+        Heat-kernel textures describe appearance on a surface through how heat spreads over it, but evaluate
+        every kernel through a global spectral basis of the whole mesh. HeatAtlas evaluates each kernel where
+        it lives, on a local chart unfolded from the mesh, and makes those charts the representation itself,
+        which removes all global preprocessing and carries over to other meshings of the same surface without
+        retraining. On 32 structurally hard objects it reaches <b>32.29 dB</b>, against 26.82 dB for the
+        strongest baseline.
+      </p>
+      <div class="links-row">
+        <a href="assets/heatatlas.pdf">PDF</a>
       </div>
     </article>
   </div>
@@ -404,30 +502,24 @@ In logged tracking data the robot's actions correlate with where the target is, 
 
     <div class="prose">
       <p>
-        A human demonstration is normally consumed as a trajectory to imitate, which quietly assumes that the
-        demonstrator’s body and the robot’s body are interchangeable. They are not, and that assumption is
-        what makes cross-embodiment transfer brittle. I would rather read a demonstration as a
-        <b>specification of how the world should change</b> — an effect stated over objects, relations, order
-        and phase, deliberately free of whose arm performed it.
+        A human demonstration is usually consumed as a trajectory to imitate. <a href="#pewam">PEWAM</a> reads it
+        instead as a statement of <b>how the world should change</b>, but I chose the terms of that statement:
+        rigid boxes, two contact points, an end state. Effects in the physical world say more than that. Objects
+        bend, open and pour, tasks have an order and a phase, and one change sets up the next. I want effect
+        programs that can express these things, and world-action models that find their own way to carry them
+        out.
       </p>
       <p>
-        That reading turns my two directions into two halves of one system: getting motion out of video is how
-        the specification is obtained, and a causally structured world model is what turns it into an execution.
-        I am building toward a <b>world-action model queried in context</b>. At test time it is given the current
-        scene and a human demonstration of a task for which it has no robot data; it infers the executions
-        compatible with the effect that demonstration describes, and uses its own learned dynamics to check which
-        of them would actually produce that effect — with no parameter update. The same effect admits many
-        executions, so the model has to return a distribution over solutions rather than a single mapping, and the
-        demonstration stays in context for the whole episode instead of being collapsed into a goal vector and
-        discarded.
+        The same holds for the structure my models rely on. The causal factorization in <a
+        href="#cstwm">CST-WM</a>, the body-part streams in <a href="#signdino">SignDino</a> and the effect
+        program in PEWAM were all mine to design, which does not scale past problems I already understand. Can
+        such structure be <b>discovered</b> rather than designed, and what evidence would show that a discovered
+        structure is real rather than merely convenient?
       </p>
       <p>
-        Two harder questions sit behind it. The causal factorization in <a href="#cstwm">CST-WM</a> and the
-        anatomical streams in <a href="#signdino">SignDino</a> were both mine to choose, which does not scale past
-        problems I already understand — so can that structure be <b>discovered</b> rather than designed? And
-        what evidence would show that a discovered structure is real rather than merely convenient? I expect the
-        second question to be as hard as the first, and I would rather work on both than assume someone else will
-        take the second.
+        I also want to explore <b>new foundational representations</b>. Heat diffusion is one example: it
+        describes how a quantity spreads from each point to its neighbours over time using only local geometry,
+        which makes it a natural way to write down how local influence builds up into global structure.
       </p>
     </div>
   </div>
@@ -445,18 +537,16 @@ In logged tracking data the robot's actions correlate with where the target is, 
         applying for PhD study beginning Fall 2027.
       </p>
       <p>
-        I also work on site at <b>Liqing Intelligence</b>, a world-model startup, on research and development for
-        its embodied-intelligence stack, alongside market research across the field. A model there is judged by
-        whether it survives a scene nobody curated, which is not the test a results table applies, and the two
-        judgements disagree often enough to be worth watching. Separately I run an NSFC undergraduate project on
-        automated grading of disc degeneration from MRI with Shanghai Ninth People’s Hospital.
+        I also work on site at <b>Liqing Intelligence</b>, a world-model startup, on research and development
+        for its embodied-intelligence stack and on market research across the field. Separately, I run an NSFC
+        undergraduate project on automated grading of disc degeneration from MRI with Shanghai Ninth People’s
+        Hospital.
       </p>
       <p>
-        My training is in mathematics, and it shows in what I reach for — optimal transport as a differentiable
-        matching layer, factorizations chosen for what they forbid rather than what they permit — and in what I
-        build myself: multi-GPU training, simulation environments, and the real-robot side of deployment on
-        Unitree G1, xArm7 and Franka FR3. The gap between a method that works in a table and one that works on a
-        robot is where most of the honest information is.
+        My training is in mathematics, and it shows in the tools I reach for: optimal transport to match two
+        sequences, factorizations chosen for what they rule out. I build the rest myself, from multi-GPU
+        training and simulation environments to deployment on real robots: a Unitree G1 and Go2, an xArm7 and a
+        Franka FR3.
       </p>
     </div>
   </div>
