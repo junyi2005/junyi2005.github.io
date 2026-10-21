@@ -94,7 +94,7 @@ h2::before{content:"";display:block;width:44px;height:3px;border-radius:2px;marg
 .pub h3{margin:0 0 8px;font-size:19px;font-weight:660;letter-spacing:-.015em;line-height:1.35}
 .pub h3 a{color:var(--text);text-decoration:none}
 .pub h3 a:hover{color:var(--accent)}
-.authors{margin:0 0 10px;font-size:14px;color:var(--muted);max-width:none}
+.authors{margin:0 0 10px;font-size:14px;text-wrap:balance;color:var(--muted);max-width:none}
 .authors .me{color:var(--text);font-weight:650}
 .pub p.blurb{margin:0 0 14px;font-size:15.6px;line-height:1.72;color:var(--muted);max-width:none}
 .meta{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
@@ -337,32 +337,35 @@ footer p{margin:0;max-width:none}
     <!-- ── SignDino ──────────────────────────────────────────── -->
     <article class="pub" id="signdino">
       <div class="pub-top">
-        <a class="teaser" href="https://junyi2005.github.io/signdino/">
+        <a class="teaser" href="https://junyi2005.github.io/signDEG/">
           <img loading="lazy"
-               src="https://junyi2005.github.io/signdino/static/insight.png"
-               alt="Left: image self-supervision samples global and local crops inside one image. Right: SignDino samples global and local views along the time axis of one tracked body part.">
+               src="https://junyi2005.github.io/signDEG/static/insight_geo.png"
+               alt="Spatial self-distillation on one frame, temporal self-distillation on one tracked body part, and SignDEG, which adds the hand geometry of every frame as a pre-training target.">
         </a>
         <div class="pub-head">
-          <h3><a href="https://junyi2005.github.io/signdino/">SignDino: Self-Supervised Sign Language Representation Learning via Temporal-Axis Self-Distillation</a></h3>
-          <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Zhenhua Li, Zhifei Li, Yi Fang</p>
+          <h3><a href="https://junyi2005.github.io/signDEG/">SignDEG (DINO Eats Geometry): Self-Supervised Sign Representations that Absorb Articulated Hand Geometry</a></h3>
+          <p class="authors"><span class="me">Junyi Hu</span>, Zhewen He, Haomian Huang, Zhenhua Li, Shuaihang Yuan, Zhifei Li, Yi Fang</p>
           <div class="meta">
             <span class="tag preprint">Under Review</span>
             <span class="tag role">First Author</span>
-            <span class="tag">Self-Supervised Learning</span>
+            <span class="tag">Geometry-Aware Self-Supervision</span>
           </div>
         </div>
       </div>
       <p class="blurb">
-        Image self-supervision learns by comparing a whole image with small crops taken from it. SignDino
-        applies the same idea <b>along time</b>: it follows each hand and the face separately through a video
-        and compares a short window of one part with that part’s whole sequence, so a representation of motion
-        is learned from how the body moves, with no labels at all. Experiments are on sign-language video,
-        where the hands and the face carry the signal.
+        What a hand expresses lies largely in how it is articulated: which fingers are selected, how they bend,
+        where the palm faces. An encoder trained on appearance alone sees it only indirectly, because
+        appearance also follows the viewpoint and the person. SignDEG uses hand geometry <b>only as a
+        pre-training target</b>: frozen DINOv3 features of tracked hands and faces feed per-stream temporal
+        Transformers trained by temporal self-distillation, while one block learns to predict the hand’s 3D
+        articulation at every frame and the last block learns the relations between frames of different videos
+        that this geometry induces. The reconstruction model and geometry heads are then discarded, so the
+        deployed encoder runs on video alone. Experiments are on sign-language video.
       </p>
       <div class="links-row">
-        <a href="https://junyi2005.github.io/signdino/">Project page</a><span class="sep">·</span>
-        <a href="https://arxiv.org/abs/2609.06296">arXiv</a><span class="sep">·</span>
-        <a href="https://github.com/junyi2005/signdino">Code</a>
+        <a href="https://junyi2005.github.io/signDEG/">Project page</a><span class="sep">·</span>
+        <a href="https://junyi2005.github.io/signDEG/signdeg.pdf">PDF</a><span class="sep">·</span>
+        <a href="https://github.com/junyi2005/signDEG">Code</a>
       </div>
     </article>
 
@@ -514,7 +517,7 @@ footer p{margin:0;max-width:none}
       </p>
       <p>
         The same holds for the structure my models rely on. The causal factorization in <a
-        href="#cstwm">CST-WM</a>, the body-part streams in <a href="#signdino">SignDino</a> and the effect
+        href="#cstwm">CST-WM</a>, the body-part streams in <a href="#signdino">SignDEG</a> and the effect
         program in PEWAM were all mine to design, which does not scale past problems I already understand. Can
         such structure be <b>discovered</b> from data rather than designed by hand, and what evidence would
         show that a discovered structure is real, rather than merely convenient for the task?
