@@ -6,7 +6,7 @@
 <title>Junyi Hu</title>
 <meta name="description" content="Junyi Hu — mathematics undergraduate at Fudan University and research assistant at New York University. How visual systems can understand interaction in the physical world: visual navigation and tracking, human motion, robots that learn from human demonstrations, and planning with learned world models. Applying for PhD study, Fall 2027.">
 <meta property="og:title" content="Junyi Hu">
-<meta property="og:description" content="How visual systems can understand interaction in the physical world: visual navigation and tracking, and human motion. Fudan University · New York University.">
+<meta property="og:description" content="How visual systems can understand interaction in the physical world: visual navigation and tracking, human motion, and planning with learned world models. Fudan University · New York University.">
 <meta property="og:type" content="profile">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤟</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -230,8 +230,9 @@ footer p{margin:0;max-width:none}
       what a representation can learn from the temporal structure of movement without labels. The two
       directions meet when a robot learns from a person: a human demonstration can be read as a statement of
       how the world should change, which the robot then carries out with its own body. My most recent work
-      turns from modeling interaction to acting on the model: when an agent plans inside a world model it has
-      learned, what makes an imagined future a good one, and how far ahead can it rely on its own plan? In the
+      asks how an agent should plan inside a world model it has learned, from two sides: the score function,
+      where the model’s own training objective tells how likely a goal is, and subgoals, where a distant goal
+      is reached in stages the agent can reach. In the
       long term, I want to make interaction an organizing principle for visual understanding, and to build
       models around that idea.
     </p>
@@ -373,7 +374,7 @@ footer p{margin:0;max-width:none}
     </article>
 
     <!-- ── Real-time translation ─────────────────────────────── -->
-    <article class="pub" id="realtime">
+    <article class="pub" id="realtime" hidden>
       <div class="pub-top">
         <a class="teaser" href="assets/realtime-slt.pdf">
           <img loading="lazy"
@@ -471,7 +472,7 @@ footer p{margin:0;max-width:none}
       </div>
     </article>
 
-    <div class="dirlabel"><span class="idx">FROM MODEL TO ACTION</span><h3>Planning inside a learned world model</h3><span class="bar"></span></div>
+    <div class="dirlabel"><span class="idx">TWO ROUTES TO PLANNING</span><h3>Planning in a learned world model</h3><span class="bar"></span></div>
 
     <!-- ── S-JEPA ────────────────────────────────────────────── -->
     <article class="pub" id="sjepa">
@@ -487,18 +488,19 @@ footer p{margin:0;max-width:none}
           <div class="meta">
             <span class="tag preprint">Under Review</span>
             <span class="tag role">Co-First Author</span>
-            <span class="tag">Training Objective = Planning Cost</span>
+            <span class="tag">Route 1 · Score Function</span>
           </div>
         </div>
       </div>
       <p class="blurb">
         A world model that predicts in representation space is trained to predict and then asked to plan, and
         the two are joined by a cost that nobody trained: a hand-written distance between the imagined outcome
-        and the goal. S-JEPA reads the cost from the model itself. When the predictor is trained by denoising,
-        its training objective evaluated at a goal bounds how likely that goal is under a candidate sequence of
-        actions, so <b>planning becomes likelihood evaluation</b>: one forward pass per candidate and no
-        rollout. The hand-written distance is the special case at the highest noise level, and because
-        likelihoods multiply, a goal image, several views and a typed instruction condition the same cost.
+        and the goal. S-JEPA reads the cost from the model itself. Trained by denoising, the predictor learns
+        the score function of the futures its actions allow, and its own training loss, evaluated at a goal,
+        bounds how likely that goal is under a candidate sequence of actions. <b>Planning becomes likelihood
+        evaluation</b>: one forward pass per candidate and no rollout. The hand-written distance turns out to
+        be this cost at the highest noise level, and a goal image, several views and a typed instruction all
+        condition the same cost.
         Experiments are on CALVIN, navigation and the DINO-WM benchmarks, and on a real robot arm.
       </p>
       <div class="links-row">
@@ -521,7 +523,7 @@ footer p{margin:0;max-width:none}
           <div class="meta">
             <span class="tag preprint">Under Review</span>
             <span class="tag role">Co-First Author</span>
-            <span class="tag">Hierarchical Planning</span>
+            <span class="tag">Route 2 · Subgoals in Stages</span>
           </div>
         </div>
       </div>
@@ -632,7 +634,9 @@ footer p{margin:0;max-width:none}
         I also want to explore <b>new foundational representations</b>. Heat diffusion is one example I have
         started to work with: it describes how a quantity spreads from each point to its neighbours over time
         using nothing but local geometry, which makes it a natural way to write down how local influence builds
-        up into global structure.
+        up into global structure. Denoising diffusion has the same structure: its noise level, like time in
+        heat flow, sets the scale at which a signal is seen, from coarse layout down to detail, and I read both
+        <a href="#sjepa">S-JEPA</a> and <a href="#heatdit">HeatDiT</a> through that scale.
       </p>
     </div>
   </div>
