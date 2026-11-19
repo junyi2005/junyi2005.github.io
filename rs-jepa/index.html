@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RS-JEPA: Recursive Self-Models for JEPA Planning</title>
+<meta name="description" content="RS-JEPA is a hierarchical planner for JEPA world models whose upper levels model where their own lower-level planner lands, trained only on executed outcomes.">
+<meta property="og:title" content="Recursive Self-Models for Efficient and Long-Horizon JEPA Planning">
+<meta property="og:description" content="RS-JEPA is a hierarchical planner for JEPA world models whose upper levels model where their own lower-level planner lands, trained only on executed outcomes.">
+<meta property="og:image" content="static/teaser.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129302;</text></svg>">
+<style>
+  :root {
+    --bg:        #ffffff;
+    --bg-soft:   #f5f7f9;
+    --bg-inset:  #eaeff3;
+    --fg:        #14181c;
+    --fg-muted:  #56616d;
+    --fg-faint:  #86909b;
+    --rule:      #dee4ea;
+    --accent:    #0F6C7C;
+    --accent-2:  #14607F;
+    --accent-soft:#e6f2f4;
+    --warn:      #A8412B;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:#0e1215; --bg-soft:#151b20; --bg-inset:#1b2228;
+      --fg:#e7ecf0; --fg-muted:#a3aeb8; --fg-faint:#76818c; --rule:#262f37;
+      --accent:#5fc3d4; --accent-2:#78bde0; --accent-soft:#12262b; --warn:#e08e78;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#0e1215; --bg-soft:#151b20; --bg-inset:#1b2228;
+    --fg:#e7ecf0; --fg-muted:#a3aeb8; --fg-faint:#76818c; --rule:#262f37;
+    --accent:#5fc3d4; --accent-2:#78bde0; --accent-soft:#12262b; --warn:#e08e78;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--sans); font-size: 16px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+  header { padding: 62px 0 34px; text-align: center; border-bottom: 1px solid var(--rule); }
+  h1 {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(27px, 4.2vw, 40px); line-height: 1.15;
+    letter-spacing: -0.012em; margin: 0 0 8px;
+  }
+  h1 .name { color: var(--accent); }
+  .subtitle {
+    font-family: var(--serif); font-size: clamp(17px, 2.3vw, 21px);
+    color: var(--fg-muted); margin: 0 0 26px; line-height: 1.35;
+  }
+  .authors { font-size: 16.5px; margin: 0 0 4px; line-height: 1.9; }
+  .affil { color: var(--fg-muted); font-size: 15px; margin: 0 0 2px; }
+  .corr  { color: var(--fg-faint); font-size: 13.5px; margin: 0; }
+
+  .links { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:26px; }
+  .btn {
+    display:inline-flex; align-items:center; gap:7px;
+    padding:9px 17px; border-radius:999px;
+    background: var(--fg); color: var(--bg);
+    text-decoration:none; font-size:14.5px; font-weight:500;
+    transition: transform .12s ease, opacity .12s ease;
+  }
+  .btn:hover { transform: translateY(-1px); opacity:.87; }
+  .btn.ghost { background:transparent; color:var(--fg); border:1px solid var(--rule); }
+  .btn svg { width:15px; height:15px; fill:currentColor; }
+
+  section { padding: 44px 0; border-bottom: 1px solid var(--rule); }
+  section:last-of-type { border-bottom: none; }
+  h2 { font-family: var(--serif); font-size: 25px; font-weight: 600; margin: 0 0 16px; letter-spacing:-0.005em; }
+  h3 {
+    font-size: 15px; font-weight: 650; letter-spacing:.04em; text-transform: uppercase;
+    color: var(--fg-muted); margin: 30px 0 10px;
+  }
+  p { margin: 0 0 15px; }
+  a { color: var(--accent-2); }
+  .lead { font-size: 17px; }
+  em.term { font-style: normal; color: var(--accent); font-weight: 600; }
+  .bad { color: var(--warn); font-weight: 600; }
+
+  figure { margin: 26px 0 8px; }
+  figure img { width:100%; height:auto; display:block; border:1px solid var(--rule); border-radius:8px; background:#fff; }
+  figcaption { font-size:14px; color:var(--fg-muted); margin-top:10px; line-height:1.55; }
+  figcaption b { color: var(--fg); font-weight:600; }
+
+  /* two-up figure row */
+  .row2 { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:20px; margin:26px 0 8px; }
+  .row2 figure { margin:0; }
+
+  /* the claim / mechanism callout */
+  .claim {
+    background: var(--bg-soft); border:1px solid var(--rule);
+    border-left: 3px solid var(--accent); border-radius: 8px;
+    padding: 16px 18px; margin: 22px 0;
+  }
+  .claim p:last-child { margin-bottom:0; }
+
+  .pillars { display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:14px; margin-top:22px; }
+  .pillar { background:var(--bg-soft); border:1px solid var(--rule); border-radius:10px; padding:16px 17px; }
+  .pillar h4 { margin:0 0 6px; font-size:15px; font-weight:650; }
+  .pillar p  { margin:0; font-size:14.5px; color:var(--fg-muted); line-height:1.55; }
+  .pillar .n { display:block; font-family:var(--mono); font-size:12px; color:var(--accent); margin-bottom:8px; }
+
+  /* video */
+  .videobox { background: var(--bg-inset); border:1px solid var(--rule); border-radius:10px; padding:14px; text-align:center; }
+  .videobox video { max-height: 74vh; max-width:100%; width:auto; border-radius:6px; display:block; margin:0 auto; background:#000; }
+
+  /* segment selector */
+  .segbar { display:flex; flex-wrap:wrap; gap:8px; margin:20px 0 14px; }
+  .seg {
+    display:flex; flex-direction:column; align-items:flex-start; gap:1px;
+    padding:8px 14px; border-radius:9px; cursor:pointer;
+    background: var(--bg-soft); border:1px solid var(--rule); color: var(--fg);
+    font-family: inherit; font-size:14px; line-height:1.3; text-align:left;
+    transition: border-color .12s ease, background .12s ease, transform .12s ease;
+  }
+  .seg:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .seg.is-active { background: var(--accent-soft); border-color: var(--accent); }
+  .seg.is-active .seg-t { color: var(--accent); }
+  .seg-t { font-weight:600; }
+  .seg-d { font-family: var(--mono); font-size:11.5px; color: var(--fg-faint); }
+  .seg-hl { border-style: dashed; }
+  .segcap { font-size:14.5px; color:var(--fg-muted); margin-top:14px; line-height:1.6; }
+  .segcap b { color: var(--fg); }
+  .segfull { font-size:13.5px; color:var(--fg-faint); margin-top:-4px; }
+
+  .tablewrap { overflow-x:auto; margin:18px 0 6px; }
+  table { border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px; }
+  caption { caption-side:bottom; text-align:left; font-size:13.5px; color:var(--fg-muted); padding-top:10px; }
+  th, td { padding:8px 12px; text-align:right; border-bottom:1px solid var(--rule); }
+  th:first-child, td:first-child { text-align:left; }
+  thead th { font-size:12.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--fg-muted); font-weight:600; border-bottom:1.5px solid var(--rule); }
+  tbody tr:last-child td { border-bottom:1.5px solid var(--rule); }
+  td.ours { color:var(--accent); font-weight:650; }
+  tr.oursrow { background: var(--accent-soft); }
+
+  pre { background:var(--bg-inset); border:1px solid var(--rule); border-radius:8px; padding:15px 17px; overflow-x:auto; font-family:var(--mono); font-size:13px; line-height:1.65; margin:14px 0; }
+  code { font-family:var(--mono); font-size:.93em; }
+  p code { background:var(--bg-inset); padding:1.5px 5px; border-radius:4px; }
+
+  footer { padding:34px 0 60px; color:var(--fg-faint); font-size:14px; text-align:center; }
+  footer a { color: var(--fg-muted); }
+
+  /* status pill above the title */
+  .venue {
+    display:inline-block; margin:0 0 16px; padding:3px 12px; border-radius:999px;
+    border:1px solid var(--accent); color:var(--accent);
+    font-size:12.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  }
+  table.compact { min-width:0; }
+  .tablegrid { display:grid; grid-template-columns:1fr; gap:4px; }
+  td.m { text-align:left; }
+  .tablegrid .tablewrap { margin:12px 0 0; }
+  .tablenote { font-size:13.5px; color:var(--fg-muted); margin-top:10px; }
+  td[rowspan] { vertical-align:top; color:var(--fg-muted); }
+  figure.narrow { max-width:560px; margin-left:auto; margin-right:auto; }
+  .tablegrid.two { grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:4px 22px; }
+  tr.refrow td { color:var(--fg-faint); font-style:italic; }
+  h1 .name { font-size:.92em; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="venue">Under review</p>
+    <h1><span class="name">Recursive Self-Models</span></h1>
+    <p class="subtitle">for Efficient and Long-Horizon JEPA Planning</p>
+
+    <p class="authors">Zhewen He<sup>*</sup> &nbsp;·&nbsp; Junyi Hu<sup>*</sup> &nbsp;·&nbsp; Jiazhao Liang &nbsp;·&nbsp; Haomian Huang &nbsp;·&nbsp; Shuaihang Yuan &nbsp;·&nbsp; Yi Fang</p>
+    <p class="affil">New York University Abu Dhabi</p>
+    <p class="corr"><sup>*</sup> equal contribution</p>
+
+    <nav class="links">
+      <a class="btn" href="rs-jepa.pdf">
+        <svg viewBox="0 0 16 16"><path d="M4 1h5l3 3v11H4V1zm5 1v3h3"/></svg>
+        Paper (PDF)
+      </a>
+      <a class="btn ghost" href="#citation">
+        <svg viewBox="0 0 16 16"><path d="M2 3h12v2H2V3zm0 4h12v2H2V7zm0 4h8v2H2v-2z"/></svg>
+        BibTeX
+      </a>
+      <a class="btn ghost" href="https://junyi2005.github.io/">
+        <svg viewBox="0 0 16 16"><path d="M8 1.5 1.5 7.5h2V14h3.5v-4h2v4h3.5V7.5h2L8 1.5z"/></svg>
+        Junyi Hu
+      </a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <figure>
+    <img loading="lazy" src="static/teaser.jpg" alt="A world-model upper level pulls a cup-blocked drawer toward an unreachable aim; RS-JEPA first moves the cup aside, then opens the drawer.">
+    <figcaption><b>Aim versus arrival.</b> HWM pulls a cup-blocked drawer toward an unreachable aim; RS-JEPA first moves the cup aside, then opens the drawer. Frames from real robot recordings are shown on either side of the scene illustrations. Below, energy fields illustrate the aim–arrive gap and reachable subgoals. In the LIBERO-Long plot, bubble area denotes planning radius.</figcaption>
+  </figure>
+</section>
+
+<section id="abstract">
+  <h2>Abstract</h2>
+  <p class="lead">Latent world models plan by searching for actions whose imagined outcome approaches a
+    goal, but this signal is reliable only a few steps ahead. Hierarchical planners extend the reach by
+    proposing subgoals with a coarser world model, yet the lower-level planner often cannot reach those
+    subgoals. We argue that the upper level should model where <em>its own lower-level planner</em> lands
+    when pursuing a subgoal, rather than how the world evolves under abstract actions. We call this a
+    <em class="term">self-model</em>, and the resulting recursive planner <b>RS-JEPA</b>.</p>
+  <p>Since reach can only be measured by execution, the self-improvement loop trains the self-model only on
+    executed pursuits and their hindsight relabels, and the hierarchy improves with use. In an idealized
+    setting with deterministic dynamics, a perfect world model and exact search, we prove that an optimistic
+    self-model collapses a hierarchy of any depth to its flat planner and that a calibrated hierarchy of depth
+    <i>K</i> has the reach of a flat planner whose horizon is exponential in <i>K</i> at compute linear in
+    <i>K</i>. Training on executed outcomes provably reaches a unique fixed point within <i>K</i> rounds, while
+    training on imagined outcomes leaves an optimistic self-model in place. Because each level searches a short
+    subproblem the level below can solve, and a prior learned from past plans warm-starts that search, the
+    planner needs far fewer model evaluations per decision than flat search.</p>
+  <p>The method applies to any JEPA world model, and we instantiate it on V-JEPA 2-AC and LeWM. Under the
+    language-conditioned protocol for LIBERO and RoboCasa, with about 10,000 self-improvement episodes budgeted
+    per suite, RS-JEPA reaches 50.7% success on LIBERO-Long, with about 44× fewer model evaluations per
+    decision than V-JEPA 2-AC at equal success and 18× fewer at their operating points. Within the same
+    system, a world-model upper level in place of the self-model loses most of the gain. On a real robot,
+    self-improvement also raises success.</p>
+</section>
+
+<section id="method">
+  <h2>Method</h2>
+  <p>Hierarchy is the usual way to plan farther than a latent world model can see: a coarser world model
+    proposes subgoals, and the fine planner pursues them. The upper level then selects subgoals that score well
+    under its model and make poor control targets. RS-JEPA scores an upper-level plan by where the planner
+    below is predicted to land, so the search chooses stepping stones that planner can reach.</p>
+  <p>What a planner can reach is revealed by running it. Each round executes the current hierarchy, records
+    where every pursuit ended, relabels the landing as a goal in hindsight, and retrains the self-model on
+    those outcomes alone. One self-model is shared across levels, and each level searches a short subproblem
+    that the level below can solve.</p>
+  <figure>
+    <img loading="lazy" src="static/pipeline.png" alt="RS-JEPA pipeline: offline stage, inputs, recursive planning across levels, the self-model, and grounded self-improvement.">
+    <figcaption><b>RS-JEPA pipeline.</b> (A) Stage 1 trains the world model and pretrains the other modules on demonstrations. (B) Each decision encodes the observation and the goal. (C) Upper levels search subgoal codes scored by the self-model and hold the first subgoal until the level below reaches it or exhausts its budget; Level 0 searches action chunks with the frozen world model. (D) The self-model predicts where the lower-level planner lands. (E) Each round retrains on executed outcomes only.</figcaption>
+  </figure>
+</section>
+
+<section id="results">
+  <h2>Simulation and real robot</h2>
+  <figure class="narrow">
+    <img loading="lazy" src="static/libero.jpg" alt="Two RS-JEPA episodes on LIBERO-Long, four frames each from start to success.">
+    <figcaption><b>Qualitative results on LIBERO-Long.</b> One RS-JEPA episode for each of two tasks, with four frames from the start to success; quotes abbreviate the task instructions.</figcaption>
+  </figure>
+  <figure>
+    <img loading="lazy" src="static/real_detour.jpg" alt="Paired real-robot rows for V-JEPA 2-AC and RS-JEPA on blocked drawer, object in drawer and peg insertion.">
+    <figcaption><b>Real-robot tasks that need a detour.</b> V-JEPA 2-AC (top) and RS-JEPA (bottom) from the same start on the B601-RS arm, with each frame labelled by the phase it shows. Blocked drawer: RS-JEPA first sets the cup aside, while V-JEPA 2-AC heads for the drawer and stalls on the cup. Object in drawer: RS-JEPA opens the drawer before it grasps the cube, while V-JEPA 2-AC reaches for the cube through the closed lid. Peg insertion: V-JEPA 2-AC overshoots the board and jams the peg beside the hole.</figcaption>
+  </figure>
+  <figure>
+    <img loading="lazy" src="static/real_long.jpg" alt="Paired real-robot rows on clean the table, rings on a peg, and stack cups.">
+    <figcaption><b>Long-horizon real-robot tasks.</b> In paired rows, V-JEPA 2-AC (top) and RS-JEPA (bottom) start from the same state. Clean the table: RS-JEPA places the three objects in turn, while V-JEPA 2-AC loses its grasp on the first. Rings on a peg: RS-JEPA stacks both rings in order, while V-JEPA 2-AC drops the first ring beside the peg. Stack cups is the short-horizon control, shown for RS-JEPA.</figcaption>
+  </figure>
+</section>
+
+<section id="citation">
+  <h2>Citation</h2>
+<pre>@misc{he2026rsjepa,
+  title  = {Recursive Self-Models for Efficient and Long-Horizon JEPA Planning},
+  author = {He, Zhewen and Hu, Junyi and Liang, Jiazhao and Huang, Haomian and Yuan, Shuaihang and Fang, Yi},
+  year   = {2026},
+  note   = {Preprint}
+}</pre>
+</section>
+
+<footer>
+  <p>New York University Abu Dhabi &nbsp;·&nbsp;
+     <a href="mailto:jh10472@nyu.edu">jh10472@nyu.edu</a></p>
+</footer>
+
+</div>
+</body>
+</html>

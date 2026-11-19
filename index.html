@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Junyi Hu</title>
-<meta name="description" content="Junyi Hu — mathematics undergraduate at Fudan University and research assistant at New York University. How visual systems can understand interaction in the physical world: visual navigation and tracking, human motion, and robots that learn from human demonstrations. Applying for PhD study, Fall 2027.">
+<meta name="description" content="Junyi Hu — mathematics undergraduate at Fudan University and research assistant at New York University. How visual systems can understand interaction in the physical world: visual navigation and tracking, human motion, robots that learn from human demonstrations, and planning with learned world models. Applying for PhD study, Fall 2027.">
 <meta property="og:title" content="Junyi Hu">
 <meta property="og:description" content="How visual systems can understand interaction in the physical world: visual navigation and tracking, and human motion. Fudan University · New York University.">
 <meta property="og:type" content="profile">
@@ -89,6 +89,7 @@ h2::before{content:"";display:block;width:44px;height:3px;border-radius:2px;marg
 .pub .teaser{display:flex;align-items:center;justify-content:center;aspect-ratio:16/10;margin:0;
   border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#fff;padding:6px;
   transition:border-color .15s,transform .15s}
+.eqnote{margin:22px 0 0;font-size:13.5px;color:var(--dim);max-width:none}
 .pub .teaser:hover{border-color:var(--accent);transform:translateY(-1px)}
 .pub .teaser img{width:100%;height:100%;object-fit:contain;display:block}
 .pub h3{margin:0 0 8px;font-size:19px;font-weight:660;letter-spacing:-.015em;line-height:1.35}
@@ -228,9 +229,11 @@ footer p{margin:0;max-width:none}
       than as one entangled system. In human motion, I study how continuous movement aligns with language, and
       what a representation can learn from the temporal structure of movement without labels. The two
       directions meet when a robot learns from a person: a human demonstration can be read as a statement of
-      how the world should change, which the robot then carries out with its own body. In the long term, I want
-      to make interaction an organizing principle for visual understanding, and to build models around that
-      idea.
+      how the world should change, which the robot then carries out with its own body. My most recent work
+      turns from modeling interaction to acting on the model: when an agent plans inside a world model it has
+      learned, what makes an imagined future a good one, and how far ahead can it rely on its own plan? In the
+      long term, I want to make interaction an organizing principle for visual understanding, and to build
+      models around that idea.
     </p>
 
     <div class="dirlabel" id="publications"><span class="idx">DIRECTION I</span><h3>Visual navigation and tracking</h3><span class="bar"></span></div>
@@ -468,6 +471,75 @@ footer p{margin:0;max-width:none}
       </div>
     </article>
 
+    <div class="dirlabel"><span class="idx">FROM MODEL TO ACTION</span><h3>Planning inside a learned world model</h3><span class="bar"></span></div>
+
+    <!-- ── S-JEPA ────────────────────────────────────────────── -->
+    <article class="pub" id="sjepa">
+      <div class="pub-top">
+        <a class="teaser" href="https://junyi2005.github.io/s-jepa/">
+          <img loading="lazy"
+               src="s-jepa/static/teaser.png"
+               alt="Existing planners roll the predictor out and score the endpoint with a hand-written distance; S-JEPA reads the cost from the predictor’s own denoising objective in one forward pass.">
+        </a>
+        <div class="pub-head">
+          <h3><a href="https://junyi2005.github.io/s-jepa/">Planning as Likelihood Evaluation: A Score-Based Theory of Joint-Embedding World Models</a></h3>
+          <p class="authors"><span class="me">Junyi Hu</span><sup>*</sup>, Zhewen He<sup>*</sup>, Jiazhao Liang, Haomian Huang, Shuaihang Yuan, Yi Fang</p>
+          <div class="meta">
+            <span class="tag preprint">Under Review</span>
+            <span class="tag role">Co-First Author</span>
+            <span class="tag">Training Objective = Planning Cost</span>
+          </div>
+        </div>
+      </div>
+      <p class="blurb">
+        A world model that predicts in representation space is trained to predict and then asked to plan, and
+        the two are joined by a cost that nobody trained: a hand-written distance between the imagined outcome
+        and the goal. S-JEPA reads the cost from the model itself. When the predictor is trained by denoising,
+        its training objective evaluated at a goal bounds how likely that goal is under a candidate sequence of
+        actions, so <b>planning becomes likelihood evaluation</b>: one forward pass per candidate and no
+        rollout. The hand-written distance is the special case at the highest noise level, and because
+        likelihoods multiply, a goal image, several views and a typed instruction condition the same cost.
+        Experiments are on CALVIN, navigation and the DINO-WM benchmarks, and on a real robot arm.
+      </p>
+      <div class="links-row">
+        <a href="https://junyi2005.github.io/s-jepa/">Project page</a><span class="sep">·</span>
+        <a href="https://junyi2005.github.io/s-jepa/s-jepa.pdf">PDF</a>
+      </div>
+    </article>
+
+    <!-- ── RS-JEPA ───────────────────────────────────────────── -->
+    <article class="pub" id="rsjepa">
+      <div class="pub-top">
+        <a class="teaser" href="https://junyi2005.github.io/rs-jepa/">
+          <img loading="lazy"
+               src="rs-jepa/static/teaser.jpg"
+               alt="A world-model upper level pulls a cup-blocked drawer toward an aim it cannot reach; RS-JEPA first moves the cup aside, then opens the drawer.">
+        </a>
+        <div class="pub-head">
+          <h3><a href="https://junyi2005.github.io/rs-jepa/">Recursive Self-Models for Efficient and Long-Horizon JEPA Planning</a></h3>
+          <p class="authors">Zhewen He<sup>*</sup>, <span class="me">Junyi Hu</span><sup>*</sup>, Jiazhao Liang, Haomian Huang, Shuaihang Yuan, Yi Fang</p>
+          <div class="meta">
+            <span class="tag preprint">Under Review</span>
+            <span class="tag role">Co-First Author</span>
+            <span class="tag">Hierarchical Planning</span>
+          </div>
+        </div>
+      </div>
+      <p class="blurb">
+        A latent world model can rank actions only a few steps ahead, and a coarser world model stacked on top
+        proposes subgoals that the planner below often cannot reach. In RS-JEPA the upper level models
+        something else: <b>where its own lower-level planner lands</b> when it pursues a subgoal. This
+        self-model is trained only on pursuits the robot has executed, so the hierarchy chooses stepping stones
+        it can reach, and its reach grows with use. Applied recursively, each level searches a short problem
+        that the level below can solve, which also lowers the compute per decision. It is instantiated on
+        V-JEPA 2-AC and LeWM, with experiments on LIBERO, RoboCasa and a real robot arm.
+      </p>
+      <div class="links-row">
+        <a href="https://junyi2005.github.io/rs-jepa/">Project page</a><span class="sep">·</span>
+        <a href="https://junyi2005.github.io/rs-jepa/rs-jepa.pdf">PDF</a>
+      </div>
+    </article>
+
     <div class="dirlabel"><span class="idx">OTHER WORK</span><h3>Surface representation</h3><span class="bar"></span></div>
 
     <!-- ── HeatAtlas ─────────────────────────────────────────── -->
@@ -499,6 +571,38 @@ footer p{margin:0;max-width:none}
         <a href="assets/heatatlas.pdf">PDF</a>
       </div>
     </article>
+
+    <!-- ── HeatDiT ───────────────────────────────────────────── -->
+    <article class="pub" id="heatdit">
+      <div class="pub-top">
+        <a class="teaser" href="https://junyi2005.github.io/heatdit/">
+          <img loading="lazy"
+               src="heatdit/static/teaser.jpg"
+               alt="Meshes textured by HeatDiT from a single input image, shown near the input view, from the side and from the unseen back.">
+        </a>
+        <div class="pub-head">
+          <h3><a href="https://junyi2005.github.io/heatdit/">HeatDiT: Intrinsic Texture Diffusion with Heat-Closed Chart Tokens</a></h3>
+          <p class="authors">Zhewen He<sup>*</sup>, <span class="me">Junyi Hu</span><sup>*</sup>, Yi Fang</p>
+          <div class="meta">
+            <span class="tag preprint">Under Review</span>
+            <span class="tag role">Co-First Author</span>
+            <span class="tag">Texture Generation</span>
+          </div>
+        </div>
+      </div>
+      <p class="blurb">
+        Meshes from image-to-3D generators and scanners rarely come with a usable UV atlas, and they are full
+        of thin shells and touching parts. HeatDiT runs texture diffusion on the surface itself. Its state is a
+        set of chart tokens on overlapping local charts, chosen so that blurring a texture by heat flow along
+        the surface has a closed form, which gives a coarse-to-fine diffusion process with no global
+        eigenbasis. Experiments are on image-to-mesh texturing.
+      </p>
+      <div class="links-row">
+        <a href="https://junyi2005.github.io/heatdit/">Project page</a><span class="sep">·</span>
+        <a href="https://junyi2005.github.io/heatdit/heatdit.pdf">PDF</a>
+      </div>
+    </article>
+    <p class="eqnote"><sup>*</sup> Equal contribution.</p>
   </div>
 </section>
 
@@ -520,7 +624,9 @@ footer p{margin:0;max-width:none}
         href="#cstwm">CST-WM</a>, the body-part streams in <a href="#signdino">SignDEG</a> and the effect
         program in PEWAM were all mine to design, which does not scale past problems I already understand. Can
         such structure be <b>discovered</b> from data rather than designed by hand, and what evidence would
-        show that a discovered structure is real, rather than merely convenient for the task?
+        show that a discovered structure is real, rather than merely convenient for the task? <a
+        href="#rsjepa">RS-JEPA</a> takes one step in that direction: what its upper level knows about the
+        planner below was learned from where that planner landed when it was run.
       </p>
       <p>
         I also want to explore <b>new foundational representations</b>. Heat diffusion is one example I have

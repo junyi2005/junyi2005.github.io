@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S-JEPA: Planning as Likelihood Evaluation</title>
+<meta name="description" content="S-JEPA is a joint-embedding world model whose denoising training objective is its planning cost: one forward pass per candidate bounds the likelihood of the goal under the actions.">
+<meta property="og:title" content="Planning as Likelihood Evaluation: A Score-Based Theory of Joint-Embedding World Models">
+<meta property="og:description" content="S-JEPA is a joint-embedding world model whose denoising training objective is its planning cost: one forward pass per candidate bounds the likelihood of the goal under the actions.">
+<meta property="og:image" content="static/teaser.png">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129302;</text></svg>">
+<style>
+  :root {
+    --bg:        #ffffff;
+    --bg-soft:   #f5f7f9;
+    --bg-inset:  #eaeff3;
+    --fg:        #14181c;
+    --fg-muted:  #56616d;
+    --fg-faint:  #86909b;
+    --rule:      #dee4ea;
+    --accent:    #0F6C7C;
+    --accent-2:  #14607F;
+    --accent-soft:#e6f2f4;
+    --warn:      #A8412B;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:#0e1215; --bg-soft:#151b20; --bg-inset:#1b2228;
+      --fg:#e7ecf0; --fg-muted:#a3aeb8; --fg-faint:#76818c; --rule:#262f37;
+      --accent:#5fc3d4; --accent-2:#78bde0; --accent-soft:#12262b; --warn:#e08e78;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#0e1215; --bg-soft:#151b20; --bg-inset:#1b2228;
+    --fg:#e7ecf0; --fg-muted:#a3aeb8; --fg-faint:#76818c; --rule:#262f37;
+    --accent:#5fc3d4; --accent-2:#78bde0; --accent-soft:#12262b; --warn:#e08e78;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--sans); font-size: 16px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+  header { padding: 62px 0 34px; text-align: center; border-bottom: 1px solid var(--rule); }
+  h1 {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(27px, 4.2vw, 40px); line-height: 1.15;
+    letter-spacing: -0.012em; margin: 0 0 8px;
+  }
+  h1 .name { color: var(--accent); }
+  .subtitle {
+    font-family: var(--serif); font-size: clamp(17px, 2.3vw, 21px);
+    color: var(--fg-muted); margin: 0 0 26px; line-height: 1.35;
+  }
+  .authors { font-size: 16.5px; margin: 0 0 4px; line-height: 1.9; }
+  .affil { color: var(--fg-muted); font-size: 15px; margin: 0 0 2px; }
+  .corr  { color: var(--fg-faint); font-size: 13.5px; margin: 0; }
+
+  .links { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:26px; }
+  .btn {
+    display:inline-flex; align-items:center; gap:7px;
+    padding:9px 17px; border-radius:999px;
+    background: var(--fg); color: var(--bg);
+    text-decoration:none; font-size:14.5px; font-weight:500;
+    transition: transform .12s ease, opacity .12s ease;
+  }
+  .btn:hover { transform: translateY(-1px); opacity:.87; }
+  .btn.ghost { background:transparent; color:var(--fg); border:1px solid var(--rule); }
+  .btn svg { width:15px; height:15px; fill:currentColor; }
+
+  section { padding: 44px 0; border-bottom: 1px solid var(--rule); }
+  section:last-of-type { border-bottom: none; }
+  h2 { font-family: var(--serif); font-size: 25px; font-weight: 600; margin: 0 0 16px; letter-spacing:-0.005em; }
+  h3 {
+    font-size: 15px; font-weight: 650; letter-spacing:.04em; text-transform: uppercase;
+    color: var(--fg-muted); margin: 30px 0 10px;
+  }
+  p { margin: 0 0 15px; }
+  a { color: var(--accent-2); }
+  .lead { font-size: 17px; }
+  em.term { font-style: normal; color: var(--accent); font-weight: 600; }
+  .bad { color: var(--warn); font-weight: 600; }
+
+  figure { margin: 26px 0 8px; }
+  figure img { width:100%; height:auto; display:block; border:1px solid var(--rule); border-radius:8px; background:#fff; }
+  figcaption { font-size:14px; color:var(--fg-muted); margin-top:10px; line-height:1.55; }
+  figcaption b { color: var(--fg); font-weight:600; }
+
+  /* two-up figure row */
+  .row2 { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:20px; margin:26px 0 8px; }
+  .row2 figure { margin:0; }
+
+  /* the claim / mechanism callout */
+  .claim {
+    background: var(--bg-soft); border:1px solid var(--rule);
+    border-left: 3px solid var(--accent); border-radius: 8px;
+    padding: 16px 18px; margin: 22px 0;
+  }
+  .claim p:last-child { margin-bottom:0; }
+
+  .pillars { display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:14px; margin-top:22px; }
+  .pillar { background:var(--bg-soft); border:1px solid var(--rule); border-radius:10px; padding:16px 17px; }
+  .pillar h4 { margin:0 0 6px; font-size:15px; font-weight:650; }
+  .pillar p  { margin:0; font-size:14.5px; color:var(--fg-muted); line-height:1.55; }
+  .pillar .n { display:block; font-family:var(--mono); font-size:12px; color:var(--accent); margin-bottom:8px; }
+
+  /* video */
+  .videobox { background: var(--bg-inset); border:1px solid var(--rule); border-radius:10px; padding:14px; text-align:center; }
+  .videobox video { max-height: 74vh; max-width:100%; width:auto; border-radius:6px; display:block; margin:0 auto; background:#000; }
+
+  /* segment selector */
+  .segbar { display:flex; flex-wrap:wrap; gap:8px; margin:20px 0 14px; }
+  .seg {
+    display:flex; flex-direction:column; align-items:flex-start; gap:1px;
+    padding:8px 14px; border-radius:9px; cursor:pointer;
+    background: var(--bg-soft); border:1px solid var(--rule); color: var(--fg);
+    font-family: inherit; font-size:14px; line-height:1.3; text-align:left;
+    transition: border-color .12s ease, background .12s ease, transform .12s ease;
+  }
+  .seg:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .seg.is-active { background: var(--accent-soft); border-color: var(--accent); }
+  .seg.is-active .seg-t { color: var(--accent); }
+  .seg-t { font-weight:600; }
+  .seg-d { font-family: var(--mono); font-size:11.5px; color: var(--fg-faint); }
+  .seg-hl { border-style: dashed; }
+  .segcap { font-size:14.5px; color:var(--fg-muted); margin-top:14px; line-height:1.6; }
+  .segcap b { color: var(--fg); }
+  .segfull { font-size:13.5px; color:var(--fg-faint); margin-top:-4px; }
+
+  .tablewrap { overflow-x:auto; margin:18px 0 6px; }
+  table { border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px; }
+  caption { caption-side:bottom; text-align:left; font-size:13.5px; color:var(--fg-muted); padding-top:10px; }
+  th, td { padding:8px 12px; text-align:right; border-bottom:1px solid var(--rule); }
+  th:first-child, td:first-child { text-align:left; }
+  thead th { font-size:12.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--fg-muted); font-weight:600; border-bottom:1.5px solid var(--rule); }
+  tbody tr:last-child td { border-bottom:1.5px solid var(--rule); }
+  td.ours { color:var(--accent); font-weight:650; }
+  tr.oursrow { background: var(--accent-soft); }
+
+  pre { background:var(--bg-inset); border:1px solid var(--rule); border-radius:8px; padding:15px 17px; overflow-x:auto; font-family:var(--mono); font-size:13px; line-height:1.65; margin:14px 0; }
+  code { font-family:var(--mono); font-size:.93em; }
+  p code { background:var(--bg-inset); padding:1.5px 5px; border-radius:4px; }
+
+  footer { padding:34px 0 60px; color:var(--fg-faint); font-size:14px; text-align:center; }
+  footer a { color: var(--fg-muted); }
+
+  /* status pill above the title */
+  .venue {
+    display:inline-block; margin:0 0 16px; padding:3px 12px; border-radius:999px;
+    border:1px solid var(--accent); color:var(--accent);
+    font-size:12.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  }
+  table.compact { min-width:0; }
+  .tablegrid { display:grid; grid-template-columns:1fr; gap:4px; }
+  td.m { text-align:left; }
+  .tablegrid .tablewrap { margin:12px 0 0; }
+  .tablenote { font-size:13.5px; color:var(--fg-muted); margin-top:10px; }
+  td[rowspan] { vertical-align:top; color:var(--fg-muted); }
+  figure.narrow { max-width:560px; margin-left:auto; margin-right:auto; }
+  .tablegrid.two { grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:4px 22px; }
+  tr.refrow td { color:var(--fg-faint); font-style:italic; }
+  h1 .name { font-size:.92em; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="venue">Under review</p>
+    <h1><span class="name">Planning as Likelihood Evaluation</span></h1>
+    <p class="subtitle">A Score-Based Theory of Joint-Embedding World Models</p>
+
+    <p class="authors">Junyi Hu<sup>*</sup> &nbsp;·&nbsp; Zhewen He<sup>*</sup> &nbsp;·&nbsp; Jiazhao Liang &nbsp;·&nbsp; Haomian Huang &nbsp;·&nbsp; Shuaihang Yuan &nbsp;·&nbsp; Yi Fang</p>
+    <p class="affil">New York University Abu Dhabi</p>
+    <p class="corr"><sup>*</sup> equal contribution</p>
+
+    <nav class="links">
+      <a class="btn" href="s-jepa.pdf">
+        <svg viewBox="0 0 16 16"><path d="M4 1h5l3 3v11H4V1zm5 1v3h3"/></svg>
+        Paper (PDF)
+      </a>
+      <a class="btn ghost" href="#citation">
+        <svg viewBox="0 0 16 16"><path d="M2 3h12v2H2V3zm0 4h12v2H2V7zm0 4h8v2H2v-2z"/></svg>
+        BibTeX
+      </a>
+      <a class="btn ghost" href="https://junyi2005.github.io/">
+        <svg viewBox="0 0 16 16"><path d="M8 1.5 1.5 7.5h2V14h3.5v-4h2v4h3.5V7.5h2L8 1.5z"/></svg>
+        Junyi Hu
+      </a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <figure class="narrow">
+    <img loading="lazy" src="static/teaser.png" alt="Existing planners roll the predictor out and score the endpoint with a hand-written distance; S-JEPA reads the cost from the predictor&#x27;s own denoising objective in one forward pass.">
+    <figcaption><b>Planning as likelihood evaluation.</b> (a) Existing planners roll the predictor out along each candidate and score the endpoint with a distance written after training. (b) S-JEPA reads the cost from the predictor’s own denoising objective at the noised goal g<sub>τ</sub>: one forward pass bounds the negative log-likelihood of the goal under the actions. (c) Trials completed with the same predictor architecture, data and budget, and planning time on PointMaze.</figcaption>
+  </figure>
+</section>
+
+<section id="abstract">
+  <h2>Abstract</h2>
+  <p class="lead">Joint-embedding world models predict the future in representation space, and a robot
+    plans with them by scoring imagined outcomes against a goal. The score is written by hand: a distance
+    between the latent rolled out to the horizon and the goal latent. It treats an implausible goal like a
+    likely one, sees the goal at one fixed scale, accepts only image goals, and costs a rollout per
+    candidate.</p>
+  <p>We take a different view of the same model. Under denoising score matching, the predictor’s objective at
+    a goal bounds the negative log-likelihood of that goal under the candidate actions, and the hand-written
+    distance is this bound’s term at the highest noise level. Planning is then likelihood evaluation: one
+    forward pass per candidate, with no rollout and no distance function. The noise level sets the resolution
+    of the cost, the training horizon sets its range, and goals multiply, so an image, several views and a
+    language instruction condition one energy. The same reading says how to train the predictor: predict the
+    clean target at the noise levels where the actions are read.</p>
+  <p>The resulting model, <b>S-JEPA</b>, plans CALVIN manipulation through a frozen video encoder from the
+    instruction alone, completing 63% of the validation windows against 31% for the hand-written distance from
+    a goal image. Where the actions leave the future undetermined, it reaches the goal in 0.86 of instances
+    against 0.38. Read from the released navigation world model without training, the energy reaches the
+    official rollout planner’s error in a fortieth of its time, and on PointMaze it matches the DINO-WM planner
+    in a sixteenth. On a real robot arm it completes 85 of 100 trials from a goal image against 60 for the
+    hand-written distance, and 94 from typed instructions.</p>
+</section>
+
+<section id="method">
+  <h2>Method</h2>
+  <p>A joint-embedding predictor is trained once, on video and the actions taken in it, and then asked to
+    plan for any goal. The cost that says how good an imagined future is has so far been written by hand after
+    training. A predictor trained by denoising score matching already carries that cost: its training loss
+    evaluated at a goal, averaged over noise levels and noise draws, bounds the negative log-likelihood of the
+    goal under the candidate actions. At the highest noise level the bound reduces to the latent distance
+    between prediction and goal, so latent-distance planning is the high-noise limit of score-based
+    planning.</p>
+  <figure>
+    <img loading="lazy" src="static/pipeline.png" alt="S-JEPA training, goals from an instruction, and planning by evaluating the goal without rollout.">
+    <figcaption><b>S-JEPA.</b> (a) One transformer denoises the target representation of the frame h steps ahead given the context and the action slot; it predicts the clean target and draws half of its noise levels from the upper third of the schedule. (b) An instruction takes the action slot, and the same network samples goal latents. (c) The planner searches chunks by the cross-entropy method on the energy: every candidate costs one forward pass at the noised goals, and goals from images, views or an instruction add.</figcaption>
+  </figure>
+</section>
+
+<section id="results">
+  <h2>Simulation and real robot</h2>
+  <div class="row2">
+  <figure>
+    <img loading="lazy" src="static/range.png" alt="Energy landscapes over first actions on CALVIN for goals 0.5, 1 and 2 seconds ahead, for predictors trained to 0.5 s and 2 s.">
+    <figcaption><b>The range of the cost follows the training horizon.</b> Energy over a 21×21 grid of first actions (±6 cm) around the demonstrated one (white cross; red circle: minimum), averaged over 50 CALVIN segments, for goals 0.5, 1 and 2 s ahead. The predictor trained to 0.5 s loses the goal beyond its horizon; the predictor trained to 2 s keeps it. Rank: fraction of grid points cheaper than the demonstrated action (0 best, 0.5 chance).</figcaption>
+  </figure>
+  <figure>
+    <img loading="lazy" src="static/real.jpg" alt="Frames from two real-arm recordings with the energy of the do-nothing chunk falling over time.">
+    <figcaption><b>The energy reads progress on the real arm.</b> The arm places three objects on a plate (top) and a ring on a peg at its second attempt (bottom); frames at the dotted times. The energy of the “do nothing” chunk against the final frame, read at 5 Hz by the CALVIN-trained predictor, falls as the task advances (rank correlation with time −0.88 and −0.74).</figcaption>
+  </figure>
+  </div>
+</section>
+
+<section id="citation">
+  <h2>Citation</h2>
+<pre>@misc{hu2026sjepa,
+  title  = {Planning as Likelihood Evaluation: A Score-Based Theory of Joint-Embedding World Models},
+  author = {Hu, Junyi and He, Zhewen and Liang, Jiazhao and Huang, Haomian and Yuan, Shuaihang and Fang, Yi},
+  year   = {2026},
+  note   = {Preprint}
+}</pre>
+</section>
+
+<footer>
+  <p>New York University Abu Dhabi &nbsp;·&nbsp;
+     <a href="mailto:jh10472@nyu.edu">jh10472@nyu.edu</a></p>
+</footer>
+
+</div>
+</body>
+</html>
